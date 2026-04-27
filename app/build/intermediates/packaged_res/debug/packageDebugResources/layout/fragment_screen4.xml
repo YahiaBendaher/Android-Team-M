@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#F5F5F7"
-    tools:context=".fragment.Screen4Fragment">
+    tools:context=".Screen4Fragment">
 
     <TextView
         android:id="@+id/titleList"

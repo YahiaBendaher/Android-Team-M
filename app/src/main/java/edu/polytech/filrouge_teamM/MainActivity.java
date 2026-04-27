@@ -7,9 +7,9 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity {
 
-    private final String TAG = "teamM " + getClass().getSimpleName();
+public class MainActivity extends AppCompatActivity {
+    private final String TAG = "teamM "+getClass().getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,9 +18,9 @@ public class MainActivity extends AppCompatActivity {
 
         ImageView image = findViewById(R.id.imageView);
         image.setBackgroundResource(R.drawable.animation);
-
-        AnimationDrawable animation = (AnimationDrawable) image.getBackground();
+        AnimationDrawable animation = (AnimationDrawable)image.getBackground();
         animation.start();
+
 
         findViewById(R.id.goDefault).setOnClickListener(clic -> {
             Intent intent = new Intent(getApplicationContext(), ControlActivity.class);
@@ -28,13 +28,12 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+
         findViewById(R.id.option).setOnClickListener(clic -> {
             Intent intent = new Intent(getApplicationContext(), ControlActivity.class);
-
-            // 2 = Screen3Fragment = Nouveau signalement / Description de l'obstacle
-            intent.putExtra(getString(R.string.index), 2);
-
+            intent.putExtra(getString(R.string.index), 3);
             startActivity(intent);
         });
     }
+
 }

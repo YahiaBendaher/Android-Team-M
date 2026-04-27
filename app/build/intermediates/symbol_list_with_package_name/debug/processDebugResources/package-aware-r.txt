@@ -2986,15 +2986,6 @@ drawable abc_vector_test
 drawable animation
 drawable avd_hide_password
 drawable avd_show_password
-drawable bg_screen3_card
-drawable bg_screen3_chip
-drawable bg_screen3_chip_selected_blue
-drawable bg_screen3_chip_selected_orange
-drawable bg_screen3_edit_text
-drawable bg_screen3_photo_icon
-drawable bg_screen3_primary_button
-drawable bg_screen3_secondary_button
-drawable bg_screen3_tip
 drawable bonuspack_bubble
 drawable btn_checkbox_checked_mtrl
 drawable btn_checkbox_checked_to_unchecked_mtrl_animation
@@ -3051,7 +3042,6 @@ drawable frame_31
 drawable frame_32
 drawable frame_33
 drawable frame_34
-drawable ic_arrow_back_24
 drawable ic_arrow_back_black_24
 drawable ic_clear_black_24
 drawable ic_clock_black_24dp
@@ -3262,11 +3252,6 @@ id bounce
 id bounceBoth
 id bounceEnd
 id bounceStart
-id btnBack
-id btnClose
-id btnContinueWithoutPhoto
-id btnTakePhoto
-id btnValidateDescription
 id bubble_description
 id bubble_image
 id bubble_moreinfo
@@ -3279,13 +3264,6 @@ id callMeasure
 id cancel_action
 id cancel_button
 id carryVelocity
-id categoryAutre
-id categoryBranche
-id categoryCarton
-id categoryDechet
-id categoryMobilier
-id categoryObstacle
-id categoryVerre
 id center
 id centerCrop
 id centerInside
@@ -3320,9 +3298,6 @@ id currentState
 id custom
 id customPanel
 id cut
-id dangerEleve
-id dangerFaible
-id dangerModere
 id date_picker_actions
 id decelerate
 id decelerateAndComplete
@@ -3357,7 +3332,6 @@ id easeInOut
 id easeOut
 id east
 id edge
-id editComment
 id edit_query
 id elastic
 id embed
@@ -3430,6 +3404,7 @@ id jumpToEnd
 id jumpToStart
 id labelScreen1Fragment
 id labelScreen2Fragment
+id labelScreen3Fragment
 id labelScreen5Fragment
 id labelScreen6Fragment
 id labelScreen7Fragment
@@ -3610,9 +3585,6 @@ id showCustom
 id showHome
 id showTitle
 id sin
-id sizeGrand
-id sizeMoyen
-id sizePetit
 id skipCollapsed
 id skipped
 id slide
@@ -3851,7 +3823,6 @@ layout design_navigation_menu
 layout design_navigation_menu_item
 layout design_text_input_end_icon
 layout design_text_input_start_icon
-layout fragment_description_obstacle
 layout fragment_menu
 layout fragment_screen1
 layout fragment_screen2
@@ -4506,7 +4477,6 @@ style RtlOverlay_Widget_AppCompat_Search_DropDown_Text
 style RtlOverlay_Widget_AppCompat_SearchView_MagIcon
 style RtlUnderlay_Widget_AppCompat_ActionButton
 style RtlUnderlay_Widget_AppCompat_ActionButton_Overflow
-style Screen3Chip
 style ShapeAppearance_M3_Comp_Badge_Large_Shape
 style ShapeAppearance_M3_Comp_Badge_Shape
 style ShapeAppearance_M3_Comp_BottomAppBar_Container_Shape
