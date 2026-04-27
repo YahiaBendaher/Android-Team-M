@@ -1,0 +1,21 @@
+# Gradle / Android generated files
+.gradle/
+build/
+app/build/
+
+# Local SDK path
+local.properties
+
+# Android Studio local files
+*.iml
+.idea/caches/
+.idea/libraries/
+.idea/workspace.xml
+.idea/vcs.xml
+.idea/deploymentTargetDropDown.xml
+.idea/compiler.xml
+.idea/assetWizardSettings.xml
+
+# OS files
+.DS_Store
+Thumbs.db
