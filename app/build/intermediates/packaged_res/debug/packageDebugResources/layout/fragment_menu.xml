@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/itemsMenu"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:elevation="8dp"
+    android:baselineAligned="false">
+
+
+    <TextView
+        android:id="@+id/txtFragmentMenu"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone" />
+
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:clickable="true"
+        android:focusable="true">
+        <ImageView
+            android:id="@+id/menu1"
+            android:tag="0"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:src="@mipmap/accueil"
+            android:contentDescription="Accueil" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Accueil"
+            android:textSize="11sp"
+            android:textColor="#8E8E93" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:clickable="true"
+        android:focusable="true">
+        <ImageView
+            android:id="@+id/menu2"
+            android:tag="1"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:src="@mipmap/carte"
+            android:contentDescription="Carte" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Carte"
+            android:textSize="11sp"
+            android:textColor="#8E8E93" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:clickable="true"
+        android:focusable="true">
+        <ImageView
+            android:id="@+id/menu3"
+            android:tag="2"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:src="@mipmap/plus"
+            android:contentDescription="Signaler" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Signaler"
+            android:textSize="11sp"
+            android:textColor="#8E8E93" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:clickable="true"
+        android:focusable="true">
+        <ImageView
+            android:id="@+id/menu4"
+            android:tag="3"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:src="@mipmap/liste"
+            android:contentDescription="Liste" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Liste"
+            android:textSize="11sp"
+            android:textColor="#8E8E93" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:clickable="true"
+        android:focusable="true">
+        <ImageView
+            android:id="@+id/menu5"
+            android:tag="4"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:src="@mipmap/suivi"
+            android:contentDescription="Suivi" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Suivi"
+            android:textSize="11sp"
+            android:textColor="#8E8E93" />
+    </LinearLayout>
+
+</LinearLayout>
