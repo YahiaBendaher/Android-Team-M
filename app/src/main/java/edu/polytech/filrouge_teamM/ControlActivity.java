@@ -16,7 +16,7 @@ public class ControlActivity extends AppCompatActivity implements Menuable, Noti
     private MenuFragment menu;
     private boolean isStarting = true;
     private Fragment[] tabFragments = { new Screen1Fragment(), new Screen2Fragment(),
-            new Screen3Fragment(), new Screen4Fragment(),
+            new ReportNewFragment(), new Screen4Fragment(),
             new Screen5Fragment(), new Screen6Fragment(),
             new Screen7Fragment() };
     private int menuNumber;
@@ -82,7 +82,14 @@ public class ControlActivity extends AppCompatActivity implements Menuable, Noti
 
     @Override
     public void onDataChange(int numFragment, Object object, int actionCode, Object argsAction) {
-        if (actionCode == 1) { // Afficher les détails
+        if (actionCode == 0) {
+            Issue newIssue = (Issue) object;
+            mainFragment = Screen1Fragment.newInstance(newIssue);
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_main, mainFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        } else if (actionCode == 1) {
             Issue selectedIssue = (Issue) object;
             mainFragment = Screen1Fragment.newInstance(selectedIssue);
 
@@ -90,10 +97,19 @@ public class ControlActivity extends AppCompatActivity implements Menuable, Noti
             transaction.replace(R.id.fragment_main, mainFragment);
             transaction.addToBackStack(null);
             transaction.commit();
-        } else if (actionCode == 2) { // Maj du rating
-            Issue updatedIssue = (Issue) object;
-            float newRating = (float) argsAction;
-            Log.d(TAG, "Update Issue: " + updatedIssue.getTitle() + " with rating: " + newRating);
+        } else if (actionCode == 3) {
+            mainFragment = new ReportLocationFragment();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_main, mainFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        } else if (actionCode == 4) {
+            String address = (String) object;
+            mainFragment = ReportDescriptionFragment.newInstance(address);
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_main, mainFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
         }
     }
 

@@ -43,27 +43,24 @@ public class Screen1Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_screen1, container, false);
 
-        TextView titleView = view.findViewById(R.id.labelScreen1Fragment);
         TextView topicView = view.findViewById(R.id.topic);
-
-        titleView.setText("MainFragment");
 
         if (getArguments() != null && getArguments().containsKey(ARG_ISSUE)) {
             Issue issue = getArguments().getParcelable(ARG_ISSUE);
             if (issue != null) {
-                String details = "Signalement : " + issue.getTitle() + "\n" +
-                                "Description : " + issue.getDescription() + "\n" +
-                                "Localisation : " + issue.getLocation() + "\n" +
-                                "Date : " + issue.getDate() + " " + issue.getHour() + "\n" +
-                                "Danger : " + issue.getDangerLevel() + "\n" +
-                                "Note : " + issue.getRating() + "/5";
+                String details = "Type : " + issue.getTitle() + "\n" +
+                        "Description : " + issue.getDescription() + "\n" +
+                        "Localisation : " + issue.getLocation() + "\n" +
+                        "Catégorie : " + issue.getCategory() + "\n" +
+                        "Contexte : " + issue.getContext() + "\n" +
+                        "Taille : " + issue.getSize() + "\n" +
+                        "Danger : " + issue.getDangerLevel() + "\n" +
+                        "Statut : " + issue.getStatus() + "\n" +
+                        "Date : " + issue.getDate() + " à " + issue.getHour() + "\n" +
+                        "Note : " + issue.getRating() + "/5\n\n" +
+                        "Protocole de sécurité : " + issue.getSafetyProtocol();
                 topicView.setText(details);
             }
-        }
-
-
-        if(view.findViewById(R.id.button) != null) {
-            view.findViewById(R.id.button).setVisibility(View.GONE);
         }
 
         return view;

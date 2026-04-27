@@ -3,7 +3,7 @@ package edu.polytech.filrouge_teamM;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Issue implements Parcelable {
+public abstract class Issue implements Parcelable {
     private String title;
     private String description;
     private String location;
@@ -13,8 +13,11 @@ public class Issue implements Parcelable {
     private float rating;
     private int priorityImageResId;
     private String status;
+    private String category;
+    private String size;
+    private String context;
 
-    public Issue(String title, String description, String location, String date, String hour, String dangerLevel, float rating, int priorityImageResId, String status) {
+    public Issue(String title, String description, String location, String date, String hour, String dangerLevel, float rating, int priorityImageResId, String status, String category, String size, String context) {
         this.title = title;
         this.description = description;
         this.location = location;
@@ -24,6 +27,9 @@ public class Issue implements Parcelable {
         this.rating = rating;
         this.priorityImageResId = priorityImageResId;
         this.status = status;
+        this.category = category;
+        this.size = size;
+        this.context = context;
     }
 
     protected Issue(Parcel in) {
@@ -36,19 +42,12 @@ public class Issue implements Parcelable {
         rating = in.readFloat();
         priorityImageResId = in.readInt();
         status = in.readString();
+        category = in.readString();
+        size = in.readString();
+        context = in.readString();
     }
 
-    public static final Creator<Issue> CREATOR = new Creator<Issue>() {
-        @Override
-        public Issue createFromParcel(Parcel in) {
-            return new Issue(in);
-        }
-
-        @Override
-        public Issue[] newArray(int size) {
-            return new Issue[size];
-        }
-    };
+    public abstract String getSafetyProtocol();
 
     @Override
     public int describeContents() {
@@ -66,6 +65,9 @@ public class Issue implements Parcelable {
         dest.writeFloat(rating);
         dest.writeInt(priorityImageResId);
         dest.writeString(status);
+        dest.writeString(category);
+        dest.writeString(size);
+        dest.writeString(context);
     }
 
     public String getTitle() { return title; }
@@ -79,4 +81,7 @@ public class Issue implements Parcelable {
     public int getPriorityImageResId() { return priorityImageResId; }
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+    public String getCategory() { return category; }
+    public String getSize() { return size; }
+    public String getContext() { return context; }
 }

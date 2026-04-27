@@ -45,16 +45,16 @@ public class Screen4Fragment extends Fragment implements ClickableIssue<Issue> {
         ListView listView = view.findViewById(R.id.listViewSignalements);
 
         issues = new ArrayList<>();
-        issues.add(new Issue("Déchet", "Sacs poubelles abandonnés", "Rue de Rivoli, Paris", "04/04/2026", "15:51", "Faible", 2.0f, R.drawable.faible, "Enregistré"));
-        issues.add(new Issue("Obstacle", "Gros carton sur la chaussée", "Champs-Élysées, Paris", "03/04/2026", "14:30", "Élevé", 4.0f, R.drawable.eleve, "Pris en charge"));
-        issues.add(new Issue("Embouteillage", "Accident mineur bloquant une voie", "Quai d'Orsay, Paris", "04/04/2026", "09:15", "Moyen", 3.0f, R.drawable.moyen, "Traité"));
-        issues.add(new Issue("Verre/Débris", "Bouteilles brisées sur la piste cyclable", "Rue de Rivoli, Paris", "03/04/2026", "16:15", "Élevé", 5.0f, R.drawable.eleve, "En cours"));
-        issues.add(new Issue("Branche", "Branche d'arbre cassée", "Boulevard Saint-Michel, Paris", "02/04/2026", "10:20", "Moyen", 3.0f, R.drawable.moyen, "Enregistré"));
-        issues.add(new Issue("Mobilier", "Banc public dégradé", "Rue du Faubourg Saint-Antoine, Paris", "04/04/2026", "10:30", "Moyen", 2.0f, R.drawable.moyen, "Pris en charge"));
-        issues.add(new Issue("Nid-de-poule", "Trou profond sur la route", "Rue de Vaugirard, Paris", "01/04/2026", "11:45", "Moyen", 4.0f, R.drawable.moyen, "Traité"));
-        issues.add(new Issue("Travaux", "Signalisation de travaux mal placée", "Boulevard Haussmann, Paris", "06/04/2026", "07:30", "Faible", 1.0f, R.drawable.faible, "En cours"));
-        issues.add(new Issue("Inondation", "Bouche d'égout obstruée", "Quai de la Gare, Paris", "05/04/2026", "08:00", "Élevé", 4.0f, R.drawable.eleve, "Enregistré"));
-        issues.add(new Issue("Brouillard dense", "Visibilité très réduite", "Périphérique, Paris", "07/04/2026", "06:00", "Élevé", 5.0f, R.drawable.eleve, "En cours"));
+        issues.add(new UrbanIssue("Déchet", "Sacs poubelles abandonnés", "Rue de Rivoli, Paris", "04/04/2026", "15:51", "Faible", 2.0f, R.drawable.faible, "Enregistré", "Déchet", "Moyen", "Urbain"));
+        issues.add(new UrbanIssue("Obstacle", "Gros carton sur la chaussée", "Champs-Élysées, Paris", "03/04/2026", "14:30", "Élevé", 4.0f, R.drawable.eleve, "Pris en charge", "Obstacle", "Grand", "Urbain"));
+        issues.add(new UrbanIssue("Embouteillage", "Accident mineur bloquant une voie", "Quai d'Orsay, Paris", "04/04/2026", "09:15", "Moyen", 3.0f, R.drawable.moyen, "Traité", "Obstacle", "Moyen", "Urbain"));
+        issues.add(new UrbanIssue("Verre/Débris", "Bouteilles brisées sur la piste cyclable", "Rue de Rivoli, Paris", "03/04/2026", "16:15", "Élevé", 5.0f, R.drawable.eleve, "En cours", "Verre/Débris", "Petit", "Urbain"));
+        issues.add(new UrbanIssue("Branche", "Branche d'arbre cassée", "Boulevard Saint-Michel, Paris", "02/04/2026", "10:20", "Moyen", 3.0f, R.drawable.moyen, "Enregistré", "Branche", "Moyen", "Urbain"));
+        issues.add(new UrbanIssue("Mobilier", "Banc public dégradé", "Rue du Faubourg Saint-Antoine, Paris", "04/04/2026", "10:30", "Moyen", 2.0f, R.drawable.moyen, "Pris en charge", "Mobilier", "Grand", "Urbain"));
+        issues.add(new UrbanIssue("Nid-de-poule", "Trou profond sur la route", "Rue de Vaugirard, Paris", "01/04/2026", "11:45", "Moyen", 4.0f, R.drawable.moyen, "Traité", "Obstacle", "Moyen", "Urbain"));
+        issues.add(new UrbanIssue("Travaux", "Signalisation de travaux mal placée", "Boulevard Haussmann, Paris", "06/04/2026", "07:30", "Faible", 1.0f, R.drawable.faible, "En cours", "Obstacle", "Moyen", "Urbain"));
+        issues.add(new UrbanIssue("Inondation", "Bouche d'égout obstruée", "Quai de la Gare, Paris", "05/04/2026", "08:00", "Élevé", 4.0f, R.drawable.eleve, "Enregistré", "Obstacle", "Moyen", "Urbain"));
+        issues.add(new HighwayIssue("Brouillard dense", "Visibilité très réduite", "Périphérique, Paris", "07/04/2026", "06:00", "Élevé", 5.0f, R.drawable.eleve, "En cours", "Autre", "Grand", "Autoroute"));
 
         adapter = new IssueAdapter(this, issues);
         listView.setAdapter(adapter);

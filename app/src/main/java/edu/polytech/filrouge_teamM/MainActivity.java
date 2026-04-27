@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.option).setOnClickListener(clic -> {
             Intent intent = new Intent(getApplicationContext(), ControlActivity.class);
-            intent.putExtra(getString(R.string.index), 3);
+            intent.putExtra(getString(R.string.index), 2);
             startActivity(intent);
         });
     }

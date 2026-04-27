@@ -4,19 +4,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F5F5F7"
+    android:background="#F5F7FA"
     tools:context=".Screen4Fragment">
 
-    <TextView
-        android:id="@+id/titleList"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Liste des signalements"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="#1C1C1E"
-        android:padding="16dp"
-        android:gravity="center_horizontal" />
+        android:layout_height="56dp"
+        android:background="#1E2A3A"
+        android:paddingHorizontal="16dp">
+
+        <TextView
+            android:id="@+id/titleList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Liste des signalements"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/listViewSignalements"
