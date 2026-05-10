@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="8dp"
     android:descendantFocusability="blocksDescendants">
 
+    <!-- Image priorité (gauche) -->
     <ImageView
         android:id="@+id/priorityImage"
         android:layout_width="50dp"
@@ -13,7 +15,9 @@
         android:layout_gravity="center_vertical"
         android:scaleType="fitCenter" />
 
+    <!-- Contenu central (cliquable pour détails) -->
     <LinearLayout
+        android:id="@+id/contentArea"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -50,14 +54,34 @@
             android:textSize="12sp"
             android:textColor="#666666" />
 
-        <TextView
-            android:id="@+id/issueStatus"
+        <!-- ✅ Ligne Statut + Flèche côte à côte (style prof) -->
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:textColor="#2196F3" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/issueStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="#2196F3" />
+
+            <!-- ✅ FLÈCHE à côté du statut, pas à droite -->
+            <ImageView
+                android:id="@+id/statusArrow"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="4dp"
+                android:src="@android:drawable/arrow_down_float"
+                android:contentDescription="Changer statut"
+                app:tint="@color/black" />
+        </LinearLayout>
+
     </LinearLayout>
 
+    <!-- Colonne droite : Danger + Rating (PAS de flèche ici) -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -75,7 +99,7 @@
 
         <RatingBar
             android:id="@+id/issueRating"
-            style="?android:attr/ratingBarStyleSmall"
+            style="@style/Widget.AppCompat.RatingBar.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:isIndicator="false"
