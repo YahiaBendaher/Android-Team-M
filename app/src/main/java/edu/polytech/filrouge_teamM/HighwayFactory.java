@@ -13,11 +13,9 @@ public class HighwayFactory implements IssueFactory {
         String date = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(now);
         String hour = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(now);
 
-        float initialRating = 5.0f;
-
         HighwayIssue issue = new HighwayIssue(title, description, location, date, hour,
-                "Élevé", initialRating, R.drawable.eleve,
-                Status.REPORTED, Priority.HIGH, category, size, context);
+                "Critique", 5.0f, R.drawable.eleve,
+                Status.REPORTED, Priority.CRITICAL, category, size, context);
 
         EmergencyService.getInstance().registerIssue(issue);
         return issue;

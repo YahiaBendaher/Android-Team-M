@@ -78,7 +78,6 @@ public class Screen4Fragment extends Fragment implements ClickableIssue<Issue> {
                 "07/04/2026", "06:00", "Élevé", 5.0f, R.drawable.eleve,
                 Status.REPORTED, Priority.HIGH, "Autre", "Grand", "Autoroute"));
 
-        // Enregistrer EmergencyService comme observateur
         for (Issue issue : issues) {
             issue.addObserver(EmergencyService.getInstance());
         }
@@ -116,21 +115,20 @@ public class Screen4Fragment extends Fragment implements ClickableIssue<Issue> {
         if (anchorView == null) anchorView = listView;
 
         PopupMenu popupMenu = new PopupMenu(requireContext(), anchorView);
-        final String[] statusValues = {"REPORTED", "CONFIRMED", "ON_SITE", "CLEARING", "RESOLVED"};
+        final String[] statusLabels = {"Signalé", "Confirmé", "Pris en charge", "En cours", "Traité"};
+        final Status[] statusValues = {Status.REPORTED, Status.CONFIRMED, Status.ON_SITE, Status.CLEARING, Status.RESOLVED};
 
-        for (int i = 0; i < statusValues.length; i++) {
-            popupMenu.getMenu().add(0, i, i, statusValues[i]);
+        for (int i = 0; i < statusLabels.length; i++) {
+            popupMenu.getMenu().add(0, i, i, statusLabels[i]);
         }
 
         popupMenu.setOnMenuItemClickListener(item -> {
             int id = item.getItemId();
-            Status newStatus = Status.valueOf(statusValues[id]);
-            issue.setStatus(newStatus);
+            issue.setStatus(statusValues[id]);
             adapter.notifyDataSetChanged();
             return true;
         });
 
         popupMenu.show();
     }
-
 }

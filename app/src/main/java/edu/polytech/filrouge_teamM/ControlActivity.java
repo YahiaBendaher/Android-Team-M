@@ -3,22 +3,32 @@ package edu.polytech.filrouge_teamM;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 public class ControlActivity extends AppCompatActivity implements Menuable, Notifiable {
+    public static final int TAB_HOME = 0;
+    public static final int TAB_MAP = 1;
+    public static final int TAB_REPORT = 2;
+    public static final int TAB_LIST = 3;
+    public static final int TAB_ALERTS = 4;
+
     private static final String DATA_IS_STARTING = "sauvegarde";
     private static final String DATA_MENU_NUMBER = "num";
     private final String TAG = "teamM " + getClass().getSimpleName();
     private Fragment mainFragment;
     private MenuFragment menu;
     private boolean isStarting = true;
-    private Fragment[] tabFragments = { new Screen1Fragment(), new Screen2Fragment(),
-            new ReportNewFragment(), new Screen4Fragment(),
-            new Screen5Fragment(), new Screen6Fragment(),
-            new Screen7Fragment() };
+    private Fragment[] tabFragments = {
+            new Screen1Fragment(),
+            new Screen2Fragment(),
+            new ReportNewFragment(),
+            new Screen4Fragment(),
+            new Screen5Fragment(),
+            new Screen6Fragment(),
+            new Screen7Fragment()
+    };
     private int menuNumber;
 
     @Override
@@ -26,13 +36,13 @@ public class ControlActivity extends AppCompatActivity implements Menuable, Noti
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_control);
 
-        if(savedInstanceState == null) {
-            menuNumber = 0;
+        if (savedInstanceState == null) {
+            menuNumber = TAB_HOME;
         }
 
         Intent intent = getIntent();
-        if(intent!=null){
-            menuNumber = intent.getIntExtra(getString(R.string.index),0);
+        if (intent != null) {
+            menuNumber = intent.getIntExtra(getString(R.string.index), TAB_HOME);
         }
 
         Bundle args = new Bundle();
@@ -67,7 +77,7 @@ public class ControlActivity extends AppCompatActivity implements Menuable, Noti
 
     @Override
     public void onFragmentDisplayed(int fragmentId) {
-        if(menuNumber != fragmentId){
+        if (menuNumber != fragmentId) {
             menuNumber = fragmentId;
             if (menu != null) {
                 menu.setCurrentActivatedIndex(menuNumber);
@@ -92,7 +102,6 @@ public class ControlActivity extends AppCompatActivity implements Menuable, Noti
         } else if (actionCode == 1) {
             Issue selectedIssue = (Issue) object;
             mainFragment = Screen1Fragment.newInstance(selectedIssue);
-
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment_main, mainFragment);
             transaction.addToBackStack(null);

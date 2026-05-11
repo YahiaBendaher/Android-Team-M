@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
@@ -43,21 +44,25 @@ public class Screen1Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_screen1, container, false);
 
+        ImageView detailImage = view.findViewById(R.id.logo_detail);
         TextView topicView = view.findViewById(R.id.topic);
 
         if (getArguments() != null && getArguments().containsKey(ARG_ISSUE)) {
             Issue issue = getArguments().getParcelable(ARG_ISSUE);
             if (issue != null) {
+                if (issue.getPriorityImageResId() != 0) {
+                    detailImage.setImageResource(issue.getPriorityImageResId());
+                }
+
                 String details = "Type : " + issue.getTitle() + "\n" +
                         "Description : " + issue.getDescription() + "\n" +
                         "Localisation : " + issue.getLocation() + "\n" +
                         "Catégorie : " + issue.getCategory() + "\n" +
                         "Contexte : " + issue.getContext() + "\n" +
                         "Taille : " + issue.getSize() + "\n" +
-                        "Danger : " + issue.getDangerLevel() + "\n" +
-                        "Statut : " + issue.getStatus() + "\n" +
-                        "Date : " + issue.getDate() + " à " + issue.getHour() + "\n" +
-                        "Note : " + issue.getRating() + "/5\n\n" +
+                        "Priorité : " + issue.getDangerLevel() + "\n" +
+                        "Statut : " + issue.getFrenchStatus() + "\n" +
+                        "Date : " + issue.getDate() + " à " + issue.getHour() + "\n\n" +
                         "Protocole de sécurité : " + issue.getSafetyProtocol();
                 topicView.setText(details);
             }

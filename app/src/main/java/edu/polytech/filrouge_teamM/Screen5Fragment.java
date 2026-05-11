@@ -6,30 +6,28 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
 
 public class Screen5Fragment extends Fragment {
     public final static int FRAGMENT_ID = 4;
-    private final String TAG = "teamM "+getClass().getSimpleName();
+    private final String TAG = "teamM " + getClass().getSimpleName();
     private Notifiable notifiable;
 
-
-
     public Screen5Fragment() {
-        Log.d(TAG,"screenFragment type 5 created");
+        Log.d(TAG, "screenFragment type 5 created");
     }
-
 
     @Override
     public void onStart() {
         super.onStart();
-        notifiable.onFragmentDisplayed(FRAGMENT_ID);
+        if (notifiable != null) {
+            notifiable.onFragmentDisplayed(FRAGMENT_ID);
+        }
     }
 
-
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (requireActivity() instanceof Notifiable) {
             notifiable = (Notifiable) requireActivity();
@@ -39,14 +37,8 @@ public class Screen5Fragment extends Fragment {
         }
     }
 
-
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,  Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_screen5, container, false);
-
-
-        return view;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_screen5, container, false);
     }
-
 }

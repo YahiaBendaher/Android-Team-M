@@ -53,7 +53,8 @@ public class IssueAdapter extends ArrayAdapter<Issue> {
         TextView dangerText = convertView.findViewById(R.id.issueDangerText);
         RatingBar ratingBar = convertView.findViewById(R.id.issueRating);
         TextView statusText = convertView.findViewById(R.id.issueStatus);
-        ImageView statusArrow = convertView.findViewById(R.id.statusArrow);
+        View statusArrow = convertView.findViewById(R.id.statusArrow);
+        View statusContainer = convertView.findViewById(R.id.statusContainer);
 
         int resId = issue.getPriorityImageResId();
         if (resId != 0) {
@@ -67,23 +68,21 @@ public class IssueAdapter extends ArrayAdapter<Issue> {
         description.setText(issue.getDescription());
         location.setText(issue.getLocation());
         dateTime.setText(issue.getDate() + " " + issue.getHour());
-        statusText.setText("Statut : " + issue.getStatus().name());
+        
+        statusText.setText("Statut : " + issue.getFrenchStatus());
 
         dangerText.setText(issue.getDangerLevel());
-        if (issue.getDangerLevel().equalsIgnoreCase("Faible")) {
-            dangerText.setTextColor(0xFF4CAF50);
-        } else if (issue.getDangerLevel().equalsIgnoreCase("Moyen") || issue.getDangerLevel().equalsIgnoreCase("Modéré")) {
-            dangerText.setTextColor(0xFFFF9800);
-        } else if (issue.getDangerLevel().equalsIgnoreCase("Élevé")) {
-            dangerText.setTextColor(0xFFF44336);
-        }
+        updateDangerColor(dangerText, issue.getPriority());
 
-        ratingBar.setRating(issue.getRating());
+        ratingBar.setRating(issue.getPriorityRating());
 
         View contentArea = convertView.findViewById(R.id.contentArea);
         contentArea.setOnClickListener(v -> callBackFragment.onClickItem(items, position));
 
-        statusArrow.setOnClickListener(v -> callBackFragment.onStatusArrowClick(items, position));
+        View.OnClickListener statusClickListener = v -> callBackFragment.onStatusArrowClick(items, position);
+        statusContainer.setOnClickListener(statusClickListener);
+        statusText.setOnClickListener(statusClickListener);
+        statusArrow.setOnClickListener(statusClickListener);
 
         ratingBar.setOnRatingBarChangeListener((ratingBar1, rating, fromUser) -> {
             if (fromUser) {
@@ -92,5 +91,21 @@ public class IssueAdapter extends ArrayAdapter<Issue> {
         });
 
         return convertView;
+    }
+
+    private void updateDangerColor(TextView textView, Priority priority) {
+        if (priority == null) return;
+        switch (priority) {
+            case LOW:
+                textView.setTextColor(0xFF4CAF50);
+                break;
+            case MEDIUM:
+                textView.setTextColor(0xFFFF9800);
+                break;
+            case HIGH:
+            case CRITICAL:
+                textView.setTextColor(0xFFF44336);
+                break;
+        }
     }
 }

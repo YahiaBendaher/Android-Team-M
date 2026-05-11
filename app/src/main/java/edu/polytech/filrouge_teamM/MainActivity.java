@@ -4,12 +4,9 @@ import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.widget.ImageView;
-
 import androidx.appcompat.app.AppCompatActivity;
 
-
 public class MainActivity extends AppCompatActivity {
-    private final String TAG = "teamM "+getClass().getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,22 +15,19 @@ public class MainActivity extends AppCompatActivity {
 
         ImageView image = findViewById(R.id.imageView);
         image.setBackgroundResource(R.drawable.animation);
-        AnimationDrawable animation = (AnimationDrawable)image.getBackground();
+        AnimationDrawable animation = (AnimationDrawable) image.getBackground();
         animation.start();
-
 
         findViewById(R.id.goDefault).setOnClickListener(clic -> {
             Intent intent = new Intent(getApplicationContext(), ControlActivity.class);
-            intent.putExtra(getString(R.string.index), 0);
+            intent.putExtra(getString(R.string.index), ControlActivity.TAB_HOME);
             startActivity(intent);
         });
-
 
         findViewById(R.id.option).setOnClickListener(clic -> {
             Intent intent = new Intent(getApplicationContext(), ControlActivity.class);
-            intent.putExtra(getString(R.string.index), 2);
+            intent.putExtra(getString(R.string.index), ControlActivity.TAB_LIST);
             startActivity(intent);
         });
     }
-
 }

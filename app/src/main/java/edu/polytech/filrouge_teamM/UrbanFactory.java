@@ -14,10 +14,8 @@ public class UrbanFactory implements IssueFactory {
         String hour = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(now);
 
         String actualDanger = (dangerLevel == null || dangerLevel.isEmpty()) ? "Faible" : dangerLevel;
-        int imageResId = chooseImage(actualDanger);
-
-        // Déterminer la priorité en fonction du danger
         Priority priority = getPriorityFromDanger(actualDanger);
+        int imageResId = chooseImage(priority);
 
         UrbanIssue issue = new UrbanIssue(title, description, location, date, hour,
                 actualDanger, 0.0f, imageResId,
@@ -27,18 +25,21 @@ public class UrbanFactory implements IssueFactory {
         return issue;
     }
 
-    private int chooseImage(String dangerLevel) {
-        if ("Faible".equalsIgnoreCase(dangerLevel)) return R.drawable.faible;
-        else if ("Élevé".equalsIgnoreCase(dangerLevel)) return R.drawable.eleve;
-        else return R.drawable.moyen;
+    private int chooseImage(Priority priority) {
+        switch (priority) {
+            case LOW: return R.drawable.faible;
+            case HIGH:
+            case CRITICAL: return R.drawable.eleve;
+            default: return R.drawable.moyen;
+        }
     }
 
     private Priority getPriorityFromDanger(String dangerLevel) {
+        if (dangerLevel == null) return Priority.MEDIUM;
         switch (dangerLevel.toLowerCase()) {
             case "faible": return Priority.LOW;
-            case "moyen": return Priority.MEDIUM;
-            case "modéré": return Priority.MEDIUM;
             case "élevé": return Priority.HIGH;
+            case "critique": return Priority.CRITICAL;
             default: return Priority.MEDIUM;
         }
     }

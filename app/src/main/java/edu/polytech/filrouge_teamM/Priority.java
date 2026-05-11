@@ -1,5 +1,8 @@
 package edu.polytech.filrouge_teamM;
 
 public enum Priority {
-    LOW, MEDIUM, HIGH, CRITICAL
+    LOW,
+    MEDIUM,
+    HIGH,
+    CRITICAL
 }
