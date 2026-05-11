@@ -53,14 +53,22 @@ public class IssueAdapter extends ArrayAdapter<Issue> {
         TextView dangerText = convertView.findViewById(R.id.issueDangerText);
         RatingBar ratingBar = convertView.findViewById(R.id.issueRating);
         TextView statusText = convertView.findViewById(R.id.issueStatus);
+        ImageView statusArrow = convertView.findViewById(R.id.statusArrow);
 
-        priorityImage.setImageResource(issue.getPriorityImageResId());
+        int resId = issue.getPriorityImageResId();
+        if (resId != 0) {
+            priorityImage.setImageResource(resId);
+            priorityImage.setVisibility(View.VISIBLE);
+        } else {
+            priorityImage.setVisibility(View.GONE);
+        }
+
         title.setText(issue.getTitle());
         description.setText(issue.getDescription());
         location.setText(issue.getLocation());
         dateTime.setText(issue.getDate() + " " + issue.getHour());
-        statusText.setText("Statut : " + issue.getStatus());
-        
+        statusText.setText("Statut : " + issue.getStatus().name());
+
         dangerText.setText(issue.getDangerLevel());
         if (issue.getDangerLevel().equalsIgnoreCase("Faible")) {
             dangerText.setTextColor(0xFF4CAF50);
@@ -72,7 +80,10 @@ public class IssueAdapter extends ArrayAdapter<Issue> {
 
         ratingBar.setRating(issue.getRating());
 
-        convertView.setOnClickListener(v -> callBackFragment.onClickItem(items, position));
+        View contentArea = convertView.findViewById(R.id.contentArea);
+        contentArea.setOnClickListener(v -> callBackFragment.onClickItem(items, position));
+
+        statusArrow.setOnClickListener(v -> callBackFragment.onStatusArrowClick(items, position));
 
         ratingBar.setOnRatingBarChangeListener((ratingBar1, rating, fromUser) -> {
             if (fromUser) {
