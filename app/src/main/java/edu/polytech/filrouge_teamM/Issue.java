@@ -9,6 +9,8 @@ public abstract class Issue implements Parcelable, IssueObservable {
     private String title;
     private String description;
     private String location;
+    private double latitude;
+    private double longitude;
     private String date;
     private String hour;
     private int priorityImageResId;
@@ -20,12 +22,14 @@ public abstract class Issue implements Parcelable, IssueObservable {
     private float priorityRating;
     private transient List<IssueObserver> observers;
 
-    public Issue(String title, String description, String location, String date, String hour,
-                 String dangerLevel, float rating, int priorityImageResId, Status status, Priority priority,
-                 String category, String size, String context) {
+    public Issue(String title, String description, String location, double latitude, double longitude,
+                 String date, String hour, String dangerLevel, float rating, int priorityImageResId,
+                 Status status, Priority priority, String category, String size, String context) {
         this.title = title;
         this.description = description;
         this.location = location;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.date = date;
         this.hour = hour;
         this.priorityRating = rating;
@@ -42,6 +46,8 @@ public abstract class Issue implements Parcelable, IssueObservable {
         title = in.readString();
         description = in.readString();
         location = in.readString();
+        latitude = in.readDouble();
+        longitude = in.readDouble();
         date = in.readString();
         hour = in.readString();
         priorityImageResId = in.readInt();
@@ -96,6 +102,8 @@ public abstract class Issue implements Parcelable, IssueObservable {
     public String getTitle() { return title; }
     public String getDescription() { return description; }
     public String getLocation() { return location; }
+    public double getLatitude() { return latitude; }
+    public double getLongitude() { return longitude; }
     public String getDate() { return date; }
     public String getHour() { return hour; }
     public int getPriorityImageResId() { return priorityImageResId; }
@@ -185,6 +193,12 @@ public abstract class Issue implements Parcelable, IssueObservable {
     public void setTitle(String title) { this.title = title; }
     public void setDescription(String description) { this.description = description; }
     public void setLocation(String location) { this.location = location; }
+    public void setLatitude(double latitude) { this.latitude = latitude; }
+    public void setLongitude(double longitude) { this.longitude = longitude; }
+    public void setCoordinates(double latitude, double longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
     public void setDate(String date) { this.date = date; }
     public void setHour(String hour) { this.hour = hour; }
     public void setPriorityImageResId(int priorityImageResId) { this.priorityImageResId = priorityImageResId; }
@@ -216,6 +230,8 @@ public abstract class Issue implements Parcelable, IssueObservable {
         dest.writeString(title);
         dest.writeString(description);
         dest.writeString(location);
+        dest.writeDouble(latitude);
+        dest.writeDouble(longitude);
         dest.writeString(date);
         dest.writeString(hour);
         dest.writeInt(priorityImageResId);

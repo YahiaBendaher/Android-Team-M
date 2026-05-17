@@ -8,11 +8,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 public class ControlActivity extends AppCompatActivity implements Menuable, Notifiable {
-    public static final int TAB_HOME = 0;
+    public static final int TAB_DETAIL = 0;
     public static final int TAB_MAP = 1;
     public static final int TAB_REPORT = 2;
     public static final int TAB_LIST = 3;
-    public static final int TAB_ALERTS = 4;
+    public static final int TAB_TRACKING = 4;
 
     private static final String DATA_IS_STARTING = "sauvegarde";
     private static final String DATA_MENU_NUMBER = "num";
@@ -21,13 +21,11 @@ public class ControlActivity extends AppCompatActivity implements Menuable, Noti
     private MenuFragment menu;
     private boolean isStarting = true;
     private Fragment[] tabFragments = {
-            new Screen1Fragment(),
-            new Screen2Fragment(),
+            new ReportDetailFragment(),
+            new MapFragment(),
             new ReportNewFragment(),
-            new Screen4Fragment(),
-            new Screen5Fragment(),
-            new Screen6Fragment(),
-            new Screen7Fragment()
+            new ReportListFragment(),
+            new TrackingFragment()
     };
     private int menuNumber;
 
@@ -37,12 +35,12 @@ public class ControlActivity extends AppCompatActivity implements Menuable, Noti
         setContentView(R.layout.activity_control);
 
         if (savedInstanceState == null) {
-            menuNumber = TAB_HOME;
+            menuNumber = TAB_DETAIL;
         }
 
         Intent intent = getIntent();
         if (intent != null) {
-            menuNumber = intent.getIntExtra(getString(R.string.index), TAB_HOME);
+            menuNumber = intent.getIntExtra(getString(R.string.index), TAB_DETAIL);
         }
 
         Bundle args = new Bundle();
@@ -94,14 +92,15 @@ public class ControlActivity extends AppCompatActivity implements Menuable, Noti
     public void onDataChange(int numFragment, Object object, int actionCode, Object argsAction) {
         if (actionCode == 0) {
             Issue newIssue = (Issue) object;
-            mainFragment = Screen1Fragment.newInstance(newIssue);
+            ReportMapModel.getInstance().addIssue(newIssue);
+            mainFragment = ReportDetailFragment.newInstance(newIssue);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment_main, mainFragment);
             transaction.addToBackStack(null);
             transaction.commit();
         } else if (actionCode == 1) {
             Issue selectedIssue = (Issue) object;
-            mainFragment = Screen1Fragment.newInstance(selectedIssue);
+            mainFragment = ReportDetailFragment.newInstance(selectedIssue);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment_main, mainFragment);
             transaction.addToBackStack(null);
@@ -113,8 +112,11 @@ public class ControlActivity extends AppCompatActivity implements Menuable, Noti
             transaction.addToBackStack(null);
             transaction.commit();
         } else if (actionCode == 4) {
-            String address = (String) object;
-            mainFragment = ReportDescriptionFragment.newInstance(address);
+            Bundle locationData = (Bundle) object;
+            String address = locationData.getString("address");
+            double lat = locationData.getDouble("lat");
+            double lng = locationData.getDouble("lng");
+            mainFragment = ReportDescriptionFragment.newInstance(address, lat, lng);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment_main, mainFragment);
             transaction.addToBackStack(null);

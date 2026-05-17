@@ -38,32 +38,43 @@
         android:orientation="horizontal">
 
         <Button
+            android:id="@+id/btn_mode_gps"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
             android:layout_weight="1"
-            android:backgroundTint="#F5F7FA"
+            android:backgroundTint="#2563FF"
             android:text="Ma position GPS"
             android:textAllCaps="false"
-            android:textColor="#64748B"
+            android:textColor="#FFFFFF"
             android:textSize="12sp" />
 
         <Button
+            android:id="@+id/btn_mode_address"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_weight="1"
-            android:backgroundTint="#2563FF"
+            android:backgroundTint="#F5F7FA"
             android:text="Saisir une adresse"
             android:textAllCaps="false"
-            android:textColor="#FFFFFF"
+            android:textColor="#64748B"
             android:textSize="12sp" />
     </LinearLayout>
 
-    <ScrollView
+    <FrameLayout
+        android:id="@+id/map_container_report"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:visibility="visible" />
+
+    <ScrollView
+        android:id="@+id/address_input_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -80,19 +91,10 @@
                 android:textColor="#2563FF"
                 android:textSize="13sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Adresse ou lieu de référence"
-                android:textColor="#111827"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp">
+                android:layout_marginTop="16dp">
 
                 <EditText
                     android:id="@+id/input_address"
@@ -104,7 +106,6 @@
                     android:padding="12dp"
                     android:paddingEnd="48dp"
                     android:textColor="#111827"
-                    android:textColorHint="#64748B"
                     android:textSize="14sp" />
 
                 <ImageView
@@ -116,69 +117,38 @@
                     android:layout_marginTop="12dp"
                     android:src="@mipmap/microphone" />
             </FrameLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="Exemples :"
-                android:textColor="#64748B"
-                android:textSize="13sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="#FFFFFF"
-                android:padding="12dp"
-                android:text="12 Rue de la Paix, 75002 Paris"
-                android:textColor="#111827"
-                android:textSize="13sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="#FFFFFF"
-                android:padding="12dp"
-                android:text="Proche de la Place de la République"
-                android:textColor="#111827"
-                android:textSize="13sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="#FFFFFF"
-                android:padding="12dp"
-                android:text="Intersection Rue de Rivoli / Rue du Louvre"
-                android:textColor="#111827"
-                android:textSize="13sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="#FFFFFF"
-                android:padding="12dp"
-                android:text="Devant le métro Gare du Nord"
-                android:textColor="#111827"
-                android:textSize="13sp" />
-
         </LinearLayout>
     </ScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#FFFFFF"
         android:orientation="vertical"
         android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Adresse détectée :"
+            android:textColor="#64748B"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/txt_current_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Position sur la carte"
+            android:textColor="#111827"
+            android:textStyle="bold"
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/btn_confirm_location"
             android:layout_width="match_parent"
             android:layout_height="56dp"
+            android:layout_marginTop="16dp"
             android:backgroundTint="#2563FF"
             android:text="Confirmer la localisation"
             android:textAllCaps="false"

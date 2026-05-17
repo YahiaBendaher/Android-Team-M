@@ -9,15 +9,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
-public class Screen1Fragment extends Fragment {
+public class ReportDetailFragment extends Fragment {
     public final static int FRAGMENT_ID = 0;
     private Notifiable notifiable;
     private static final String ARG_ISSUE = "selected_issue";
 
-    public Screen1Fragment() {}
+    public ReportDetailFragment() {}
 
-    public static Screen1Fragment newInstance(Issue issue) {
-        Screen1Fragment fragment = new Screen1Fragment();
+    public static ReportDetailFragment newInstance(Issue issue) {
+        ReportDetailFragment fragment = new ReportDetailFragment();
         Bundle args = new Bundle();
         args.putParcelable(ARG_ISSUE, issue);
         fragment.setArguments(args);
@@ -42,7 +42,7 @@ public class Screen1Fragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_screen1, container, false);
+        View view = inflater.inflate(R.layout.fragment_report_detail, container, false);
 
         ImageView detailImage = view.findViewById(R.id.logo_detail);
         TextView topicView = view.findViewById(R.id.topic);

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#FFFFFF"
-    tools:context=".Screen5Fragment">
+    tools:context=".TrackingFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -18,12 +18,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="Mes Signalements"
+            android:text="Suivi"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
             android:textStyle="bold" />
     </RelativeLayout>
-
-
 
 </LinearLayout>

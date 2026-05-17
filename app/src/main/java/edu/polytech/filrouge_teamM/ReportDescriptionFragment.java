@@ -23,8 +23,12 @@ public class ReportDescriptionFragment extends Fragment {
     public final static int FRAGMENT_ID = 2;
     private final String TAG = "teamM " + getClass().getSimpleName();
     private static final String ARG_ADDRESS = "address";
+    private static final String ARG_LAT = "lat";
+    private static final String ARG_LNG = "lng";
     private Notifiable notifiable;
     private String address;
+    private double latitude;
+    private double longitude;
 
     private String selectedCategory = "Obstacle";
     private String selectedContext = "Urbain";
@@ -47,10 +51,12 @@ public class ReportDescriptionFragment extends Fragment {
             }
     );
 
-    public static ReportDescriptionFragment newInstance(String address) {
+    public static ReportDescriptionFragment newInstance(String address, double lat, double lng) {
         ReportDescriptionFragment fragment = new ReportDescriptionFragment();
         Bundle args = new Bundle();
         args.putString(ARG_ADDRESS, address);
+        args.putDouble(ARG_LAT, lat);
+        args.putDouble(ARG_LNG, lng);
         fragment.setArguments(args);
         return fragment;
     }
@@ -63,6 +69,8 @@ public class ReportDescriptionFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             address = getArguments().getString(ARG_ADDRESS);
+            latitude = getArguments().getDouble(ARG_LAT);
+            longitude = getArguments().getDouble(ARG_LNG);
         }
     }
 
@@ -125,7 +133,7 @@ public class ReportDescriptionFragment extends Fragment {
                 factory = new UrbanFactory();
             }
 
-            Issue newIssue = factory.createIssue(title, description, address, selectedCategory, selectedSize, selectedDangerLevel, selectedContext);
+            Issue newIssue = factory.createIssue(title, description, address, latitude, longitude, selectedCategory, selectedSize, selectedDangerLevel, selectedContext);
 
             if (notifiable != null) {
                 notifiable.onDataChange(FRAGMENT_ID, newIssue, 0, newIssue.getSafetyProtocol());

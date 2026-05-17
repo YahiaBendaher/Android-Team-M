@@ -3,11 +3,11 @@ package edu.polytech.filrouge_teamM;
 import android.os.Parcel;
 
 public class UrbanIssue extends Issue {
-    public UrbanIssue(String title, String description, String location, String date, String hour,
-                      String dangerLevel, float rating, int priorityImageResId, Status status, Priority priority,
-                      String category, String size, String context) {
-        super(title, description, location, date, hour, dangerLevel, rating, priorityImageResId,
-                status, priority, category, size, context);
+    public UrbanIssue(String title, String description, String location, double latitude, double longitude,
+                      String date, String hour, String dangerLevel, float rating, int priorityImageResId,
+                      Status status, Priority priority, String category, String size, String context) {
+        super(title, description, location, latitude, longitude, date, hour, dangerLevel, rating,
+                priorityImageResId, status, priority, category, size, context);
     }
 
     protected UrbanIssue(Parcel in) {

@@ -7,7 +7,7 @@ import java.util.Locale;
 public class UrbanFactory implements IssueFactory {
 
     @Override
-    public Issue createIssue(String title, String description, String location, String category,
+    public Issue createIssue(String title, String description, String location, double latitude, double longitude, String category,
                              String size, String dangerLevel, String context) {
         Date now = new Date();
         String date = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(now);
@@ -17,7 +17,7 @@ public class UrbanFactory implements IssueFactory {
         Priority priority = getPriorityFromDanger(actualDanger);
         int imageResId = chooseImage(priority);
 
-        UrbanIssue issue = new UrbanIssue(title, description, location, date, hour,
+        UrbanIssue issue = new UrbanIssue(title, description, location, latitude, longitude, date, hour,
                 actualDanger, 0.0f, imageResId,
                 Status.REPORTED, priority, category, size, context);
 
