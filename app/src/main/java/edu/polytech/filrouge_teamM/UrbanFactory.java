@@ -8,7 +8,7 @@ public class UrbanFactory implements IssueFactory {
 
     @Override
     public Issue createIssue(String title, String description, String location, double latitude, double longitude, String category,
-                             String size, String dangerLevel, String context) {
+                             String size, String dangerLevel, String context, String picture) {
         Date now = new Date();
         String date = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(now);
         String hour = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(now);
@@ -16,10 +16,17 @@ public class UrbanFactory implements IssueFactory {
         String actualDanger = (dangerLevel == null || dangerLevel.isEmpty()) ? "Faible" : dangerLevel;
         Priority priority = getPriorityFromDanger(actualDanger);
         int imageResId = chooseImage(priority);
+        
+        float rating = 1.5f;
+        switch (priority) {
+            case MEDIUM: rating = 3.0f; break;
+            case HIGH: rating = 4.0f; break;
+            case CRITICAL: rating = 5.0f; break;
+        }
 
         UrbanIssue issue = new UrbanIssue(title, description, location, latitude, longitude, date, hour,
-                actualDanger, 0.0f, imageResId,
-                Status.REPORTED, priority, category, size, context);
+                actualDanger, rating, imageResId,
+                Status.REGISTERED, priority, category, size, context, picture);
 
         EmergencyService.getInstance().registerIssue(issue);
         return issue;

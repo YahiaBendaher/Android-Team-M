@@ -15,8 +15,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -52,6 +54,15 @@ public class ReportLocationFragment extends Fragment implements OnMapReadyCallba
     private View addressInputContainer;
     private TextView txtCurrentAddress;
     private EditText inputAddress;
+
+    private final ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    getUserLocation();
+                } else {
+                    centerOnFallback();
+                }
+            });
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -90,7 +101,7 @@ public class ReportLocationFragment extends Fragment implements OnMapReadyCallba
 
         btnGpsMode.setOnClickListener(v -> {
             switchMode(true, btnGpsMode, btnAddressMode);
-            getUserLocation();
+            checkLocationPermission();
         });
         btnAddressMode.setOnClickListener(v -> switchMode(false, btnGpsMode, btnAddressMode));
 
@@ -103,10 +114,10 @@ public class ReportLocationFragment extends Fragment implements OnMapReadyCallba
         mapContainer.setVisibility(isGps ? View.VISIBLE : View.GONE);
         addressInputContainer.setVisibility(isGps ? View.GONE : View.VISIBLE);
         
-        btnGps.setBackgroundTintList(android.content.res.ColorStateList.valueOf(getResources().getColor(isGps ? R.color.blue : R.color.white)));
+        btnGps.setBackgroundTintList(android.content.res.ColorStateList.valueOf(getResources().getColor(isGps ? R.color.blue_obstrack : R.color.white)));
         btnGps.setTextColor(getResources().getColor(isGps ? R.color.white : R.color.black));
         
-        btnAddr.setBackgroundTintList(android.content.res.ColorStateList.valueOf(getResources().getColor(isGps ? R.color.white : R.color.blue)));
+        btnAddr.setBackgroundTintList(android.content.res.ColorStateList.valueOf(getResources().getColor(isGps ? R.color.white : R.color.blue_obstrack)));
         btnAddr.setTextColor(getResources().getColor(isGps ? R.color.black : R.color.white));
     }
 
@@ -145,7 +156,15 @@ public class ReportLocationFragment extends Fragment implements OnMapReadyCallba
             }
         });
 
-        getUserLocation();
+        checkLocationPermission();
+    }
+
+    private void checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            getUserLocation();
+        } else {
+            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
+        }
     }
 
     private void updateAddressDisplay(double lat, double lng) {
@@ -169,34 +188,33 @@ public class ReportLocationFragment extends Fragment implements OnMapReadyCallba
     }
 
     private void getUserLocation() {
-        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 101);
-            return;
-        }
-        
-        if (mMap != null) {
-            mMap.setMyLocationEnabled(true);
-        }
+        try {
+            if (mMap != null) {
+                mMap.setMyLocationEnabled(true);
+            }
 
-        fusedLocationClient.getCurrentLocation(com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY, null)
-                .addOnSuccessListener(location -> {
-                    if (location != null && isValidLocation(location.getLatitude(), location.getLongitude())) {
-                        Log.d("ReportLocationFragment", "Current location received: " + location.getLatitude() + ", " + location.getLongitude());
-                        selectedLat = location.getLatitude();
-                        selectedLng = location.getLongitude();
-                        LatLng userPos = new LatLng(selectedLat, selectedLng);
-                        if (selectionMarker != null) selectionMarker.setPosition(userPos);
-                        if (mMap != null) mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userPos, 15f));
-                        updateAddressDisplay(selectedLat, selectedLng);
-                    } else {
-                        Log.d("ReportLocationFragment", "Location unavailable or invalid, fallback to Polytech");
+            fusedLocationClient.getCurrentLocation(com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY, null)
+                    .addOnSuccessListener(location -> {
+                        if (location != null && isValidLocation(location.getLatitude(), location.getLongitude())) {
+                            Log.d("ReportLocationFragment", "Current location received: " + location.getLatitude() + ", " + location.getLongitude());
+                            selectedLat = location.getLatitude();
+                            selectedLng = location.getLongitude();
+                            LatLng userPos = new LatLng(selectedLat, selectedLng);
+                            if (selectionMarker != null) selectionMarker.setPosition(userPos);
+                            if (mMap != null) mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userPos, 15f));
+                            updateAddressDisplay(selectedLat, selectedLng);
+                        } else {
+                            Log.d("ReportLocationFragment", "Location unavailable or invalid, fallback to Polytech");
+                            centerOnFallback();
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("ReportLocationFragment", "Error getting location", e);
                         centerOnFallback();
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    Log.e("ReportLocationFragment", "Error getting location", e);
-                    centerOnFallback();
-                });
+                    });
+        } catch (SecurityException e) {
+            centerOnFallback();
+        }
     }
 
     private boolean isValidLocation(double latitude, double longitude) {
@@ -215,15 +233,6 @@ public class ReportLocationFragment extends Fragment implements OnMapReadyCallba
         updateAddressDisplay(selectedLat, selectedLng);
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == 101 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            getUserLocation();
-        } else {
-            centerOnFallback();
-        }
-    }
-
     private void confirmLocation() {
         if (addressInputContainer.getVisibility() == View.VISIBLE) {
             selectedAddress = inputAddress.getText().toString().trim();
@@ -238,6 +247,8 @@ public class ReportLocationFragment extends Fragment implements OnMapReadyCallba
         data.putDouble("lat", selectedLat);
         data.putDouble("lng", selectedLng);
         
-        notifiable.onDataChange(FRAGMENT_ID, data, 4, null);
+        if (notifiable != null) {
+            notifiable.onDataChange(FRAGMENT_ID, data, 4, null);
+        }
     }
 }

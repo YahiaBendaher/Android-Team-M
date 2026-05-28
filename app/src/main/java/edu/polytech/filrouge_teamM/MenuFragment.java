@@ -28,11 +28,11 @@ public class MenuFragment extends Fragment{
     public void setCurrentActivatedIndex(int index){
         Log.d(TAG,"setCurrentActivatedIndex updated to " + index +" (currentActivatedIndex = "+currentActivatedIndex+")");
         List<ImageView> imageViews = findPicturesMenuFromId(layout.findViewById(R.id.itemsMenu));
-        
+
         if (currentActivatedIndex >= 0 && currentActivatedIndex < imageViews.size() && currentActivatedIndex < iconNames.length) {
             imageViews.get(currentActivatedIndex).setImageResource(layout.getResources().getIdentifier(iconNames[currentActivatedIndex], "mipmap", layout.getContext().getPackageName()));
         }
-        
+
         if (index >= 0 && index < imageViews.size() && index < iconNames.length) {
             imageViews.get(index).setImageResource(layout.getResources().getIdentifier(iconNames[index] + "_s", "mipmap", layout.getContext().getPackageName()));
         }
@@ -49,12 +49,10 @@ public class MenuFragment extends Fragment{
         if (getArguments() != null) {
             currentActivatedIndex = getArguments().getInt(getString(R.string.index), 0);
         }
-        
+
         if (currentActivatedIndex >= 0 && currentActivatedIndex < imageViews.size() && currentActivatedIndex < iconNames.length) {
             imageViews.get(currentActivatedIndex).setImageResource(layout.getResources().getIdentifier(iconNames[currentActivatedIndex] + "_s", "mipmap", layout.getContext().getPackageName()));
         }
-
-        menuable.onMenuChange(currentActivatedIndex);
 
         for(ImageView imageView : imageViews) {
             if (imageView.getParent() instanceof View) {

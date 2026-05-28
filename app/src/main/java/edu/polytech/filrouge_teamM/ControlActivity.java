@@ -1,14 +1,28 @@
 package edu.polytech.filrouge_teamM;
 
+import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-public class ControlActivity extends AppCompatActivity implements Menuable, Notifiable {
-    public static final int TAB_DETAIL = 0;
+import java.io.File;
+import java.io.IOException;
+
+public class ControlActivity extends AppCompatActivity implements Menuable, Notifiable, Picturable {
+    public static final int TAB_HOME = 0;
     public static final int TAB_MAP = 1;
     public static final int TAB_REPORT = 2;
     public static final int TAB_LIST = 3;
@@ -16,12 +30,35 @@ public class ControlActivity extends AppCompatActivity implements Menuable, Noti
 
     private static final String DATA_IS_STARTING = "sauvegarde";
     private static final String DATA_MENU_NUMBER = "num";
+    private static final String DATA_PENDING_PICTURE = "pending_picture";
+    private static final String DATA_PENDING_CAMERA_PHOTO = "pending_camera_photo";
     private final String TAG = "teamM " + getClass().getSimpleName();
     private Fragment mainFragment;
     private MenuFragment menu;
     private boolean isStarting = true;
+    private String pendingPicturePath;
+    private String pendingCameraPhotoPath;
+
+    private final ActivityResultLauncher<String> cameraPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    startCameraCapture();
+                } else {
+                    showCameraPermissionDeniedDialog();
+                }
+            });
+
+    private final ActivityResultLauncher<Uri> takePictureLauncher =
+            registerForActivityResult(new ActivityResultContracts.TakePicture(), success -> {
+                if (success && pendingCameraPhotoPath != null) {
+                    openPhotoConfirmation(pendingCameraPhotoPath);
+                } else {
+                    Toast.makeText(this, "Photo annulée", Toast.LENGTH_SHORT).show();
+                }
+            });
+
     private Fragment[] tabFragments = {
-            new ReportDetailFragment(),
+            new HomeFragment(),
             new MapFragment(),
             new ReportNewFragment(),
             new ReportListFragment(),
@@ -35,12 +72,16 @@ public class ControlActivity extends AppCompatActivity implements Menuable, Noti
         setContentView(R.layout.activity_control);
 
         if (savedInstanceState == null) {
-            menuNumber = TAB_DETAIL;
+            menuNumber = TAB_HOME;
+        } else {
+            pendingPicturePath = savedInstanceState.getString(DATA_PENDING_PICTURE);
+            pendingCameraPhotoPath = savedInstanceState.getString(DATA_PENDING_CAMERA_PHOTO);
+            menuNumber = savedInstanceState.getInt(DATA_MENU_NUMBER);
         }
 
         Intent intent = getIntent();
-        if (intent != null) {
-            menuNumber = intent.getIntExtra(getString(R.string.index), TAB_DETAIL);
+        if (intent != null && intent.hasExtra(getString(R.string.index))) {
+            menuNumber = intent.getIntExtra(getString(R.string.index), TAB_HOME);
         }
 
         Bundle args = new Bundle();
@@ -55,31 +96,62 @@ public class ControlActivity extends AppCompatActivity implements Menuable, Noti
             transaction.replace(R.id.fragment_menu, menu);
             transaction.replace(R.id.fragment_main, mainFragment);
             transaction.commit();
+        } else {
+            menu = (MenuFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_menu);
+        }
+
+        getSupportFragmentManager().addOnBackStackChangedListener(() -> updateMenuForVisibleFragment());
+    }
+
+    private void setMenuIndex(int index) {
+        menuNumber = index;
+        if (menu != null) {
+            menu.setCurrentActivatedIndex(index);
+        }
+    }
+
+    private void updateMenuForVisibleFragment() {
+        Fragment current = getSupportFragmentManager().findFragmentById(R.id.fragment_main);
+
+        if (current instanceof HomeFragment) {
+            setMenuIndex(TAB_HOME);
+        } else if (current instanceof MapFragment) {
+            setMenuIndex(TAB_MAP);
+        } else if (current instanceof ReportNewFragment
+                || current instanceof PhotoConfirmationFragment
+                || current instanceof ReportLocationFragment
+                || current instanceof ReportDescriptionFragment
+                || current instanceof ReportSummaryFragment
+                || current instanceof ReportSentFragment) {
+            setMenuIndex(TAB_REPORT);
+        } else if (current instanceof ReportListFragment) {
+            setMenuIndex(TAB_LIST);
+        } else if (current instanceof TrackingFragment) {
+            setMenuIndex(TAB_TRACKING);
         }
     }
 
     @Override
     public void onMenuChange(int index) {
+        if (index == TAB_REPORT) {
+            this.pendingPicturePath = null;
+        }
+
         menuNumber = index;
         mainFragment = tabFragments[index];
+
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_main, mainFragment);
-
-        if (!isStarting) {
-            transaction.addToBackStack(null);
-        } else {
-            isStarting = false;
-        }
+        transaction.addToBackStack(null);
         transaction.commit();
+
+        setMenuIndex(index);
     }
 
     @Override
     public void onFragmentDisplayed(int fragmentId) {
         if (menuNumber != fragmentId) {
-            menuNumber = fragmentId;
-            if (menu != null) {
-                menu.setCurrentActivatedIndex(menuNumber);
-            }
+            setMenuIndex(fragmentId);
         }
     }
 
@@ -89,25 +161,86 @@ public class ControlActivity extends AppCompatActivity implements Menuable, Noti
     }
 
     @Override
+    public void onPictureTaken(String photopath) {
+        this.pendingPicturePath = photopath;
+    }
+
+    public String consumePendingPicturePath() {
+        String path = pendingPicturePath;
+        pendingPicturePath = null;
+        return path;
+    }
+
+    private void requestCameraCapture() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED) {
+            startCameraCapture();
+        } else {
+            cameraPermissionLauncher.launch(Manifest.permission.CAMERA);
+        }
+    }
+
+    private void startCameraCapture() {
+        try {
+            File photoFile = File.createTempFile("IMG_", ".jpg", getCacheDir());
+            pendingCameraPhotoPath = photoFile.getAbsolutePath();
+
+            Uri photoUri = FileProvider.getUriForFile(
+                    this,
+                    getPackageName() + ".fileprovider",
+                    photoFile
+            );
+
+            takePictureLauncher.launch(photoUri);
+        } catch (IOException e) {
+            Toast.makeText(this, "Erreur lors de la création du fichier photo", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void openPhotoConfirmation(String photoPath) {
+        mainFragment = PhotoConfirmationFragment.newInstance(photoPath);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_main, mainFragment)
+                .addToBackStack(null)
+                .commit();
+
+        setMenuIndex(TAB_REPORT);
+    }
+
+    private void showCameraPermissionDeniedDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Permission requise")
+                .setMessage("L’accès à la caméra est nécessaire pour ajouter une photo au signalement. Vous pouvez continuer sans photo si vous le souhaitez.")
+                .setPositiveButton("Continuer sans photo", (dialog, which) -> {
+                    pendingPicturePath = null;
+                    onDataChange(TAB_REPORT, null, 3, null);
+                })
+                .setNegativeButton("Annuler", null)
+                .show();
+    }
+
+    @Override
     public void onDataChange(int numFragment, Object object, int actionCode, Object argsAction) {
-        if (actionCode == 0) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        if (actionCode == 9) {
+            requestCameraCapture();
+        } else if (actionCode == 0) {
             Issue newIssue = (Issue) object;
             ReportMapModel.getInstance().addIssue(newIssue);
             mainFragment = ReportDetailFragment.newInstance(newIssue);
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment_main, mainFragment);
             transaction.addToBackStack(null);
             transaction.commit();
         } else if (actionCode == 1) {
             Issue selectedIssue = (Issue) object;
             mainFragment = ReportDetailFragment.newInstance(selectedIssue);
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment_main, mainFragment);
             transaction.addToBackStack(null);
             transaction.commit();
         } else if (actionCode == 3) {
             mainFragment = new ReportLocationFragment();
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment_main, mainFragment);
             transaction.addToBackStack(null);
             transaction.commit();
@@ -116,8 +249,33 @@ public class ControlActivity extends AppCompatActivity implements Menuable, Noti
             String address = locationData.getString("address");
             double lat = locationData.getDouble("lat");
             double lng = locationData.getDouble("lng");
-            mainFragment = ReportDescriptionFragment.newInstance(address, lat, lng);
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            mainFragment = ReportDescriptionFragment.newInstance(address, lat, lng, pendingPicturePath);
+            transaction.replace(R.id.fragment_main, mainFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        } else if (actionCode == 5) {
+            String photoPath = (String) object;
+            mainFragment = PhotoConfirmationFragment.newInstance(photoPath);
+            transaction.replace(R.id.fragment_main, mainFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        } else if (actionCode == 6) {
+            Bundle summaryData = (Bundle) object;
+            mainFragment = ReportSummaryFragment.newInstance(summaryData);
+            transaction.replace(R.id.fragment_main, mainFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        } else if (actionCode == 7) {
+            Issue newIssue = (Issue) object;
+            ReportMapModel.getInstance().addIssue(newIssue);
+            this.pendingPicturePath = null;
+            mainFragment = ReportSentFragment.newInstance(newIssue);
+            transaction.replace(R.id.fragment_main, mainFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        } else if (actionCode == 8) {
+            Issue issue = (Issue) object;
+            mainFragment = ReportDetailFragment.newInstance(issue);
             transaction.replace(R.id.fragment_main, mainFragment);
             transaction.addToBackStack(null);
             transaction.commit();
@@ -125,16 +283,11 @@ public class ControlActivity extends AppCompatActivity implements Menuable, Noti
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(DATA_IS_STARTING, isStarting);
         outState.putInt(DATA_MENU_NUMBER, menuNumber);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        isStarting = savedInstanceState.getBoolean(DATA_IS_STARTING);
-        menuNumber = savedInstanceState.getInt(DATA_MENU_NUMBER);
+        outState.putString(DATA_PENDING_PICTURE, pendingPicturePath);
+        outState.putString(DATA_PENDING_CAMERA_PHOTO, pendingCameraPhotoPath);
     }
 }

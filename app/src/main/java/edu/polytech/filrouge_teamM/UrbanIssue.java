@@ -5,9 +5,9 @@ import android.os.Parcel;
 public class UrbanIssue extends Issue {
     public UrbanIssue(String title, String description, String location, double latitude, double longitude,
                       String date, String hour, String dangerLevel, float rating, int priorityImageResId,
-                      Status status, Priority priority, String category, String size, String context) {
+                      Status status, Priority priority, String category, String size, String context, String picture) {
         super(title, description, location, latitude, longitude, date, hour, dangerLevel, rating,
-                priorityImageResId, status, priority, category, size, context);
+                priorityImageResId, status, priority, category, size, context, picture);
     }
 
     protected UrbanIssue(Parcel in) {

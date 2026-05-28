@@ -1,22 +1,24 @@
-# Gradle / Android generated files
+# Gradle files
 .gradle/
 build/
 app/build/
-
-# Local SDK path
 local.properties
 
-# Android Studio local files
+# Android Studio / IntelliJ files
+.idea/
 *.iml
-.idea/caches/
-.idea/libraries/
-.idea/workspace.xml
-.idea/vcs.xml
-.idea/deploymentTargetDropDown.xml
-.idea/compiler.xml
-.idea/assetWizardSettings.xml
+*.iws
+*.ipr
+out/
 
-# OS files
+# OS generated files
 .DS_Store
+.DS_Store?
+Icon?
 Thumbs.db
 
+# Other
+app.zip
+captures/
+.externalNativeBuild
+.cxx

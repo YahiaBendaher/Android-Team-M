@@ -8,17 +8,24 @@ public class HighwayFactory implements IssueFactory {
 
     @Override
     public Issue createIssue(String title, String description, String location, double latitude, double longitude, String category,
-                             String size, String dangerLevel, String context) {
+                             String size, String dangerLevel, String context, String picture) {
         Date now = new Date();
         String date = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(now);
         String hour = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(now);
 
         String actualDanger = (dangerLevel == null || dangerLevel.isEmpty()) ? "Élevé" : dangerLevel;
         Priority priority = getPriorityFromDanger(actualDanger);
+        
+        float rating = 4.0f;
+        switch (priority) {
+            case LOW: rating = 1.5f; break;
+            case MEDIUM: rating = 3.0f; break;
+            case CRITICAL: rating = 5.0f; break;
+        }
 
         HighwayIssue issue = new HighwayIssue(title, description, location, latitude, longitude, date, hour,
-                actualDanger, 5.0f, R.drawable.eleve,
-                Status.REPORTED, priority, category, size, context);
+                actualDanger, rating, R.drawable.eleve,
+                Status.REGISTERED, priority, category, size, context, picture);
 
         EmergencyService.getInstance().registerIssue(issue);
         return issue;

@@ -20,11 +20,12 @@ public abstract class Issue implements Parcelable, IssueObservable {
     private Status status;
     private Priority priority;
     private float priorityRating;
+    private String picture;
     private transient List<IssueObserver> observers;
 
     public Issue(String title, String description, String location, double latitude, double longitude,
                  String date, String hour, String dangerLevel, float rating, int priorityImageResId,
-                 Status status, Priority priority, String category, String size, String context) {
+                 Status status, Priority priority, String category, String size, String context, String picture) {
         this.title = title;
         this.description = description;
         this.location = location;
@@ -39,6 +40,7 @@ public abstract class Issue implements Parcelable, IssueObservable {
         this.category = category;
         this.size = size;
         this.context = context;
+        this.picture = picture;
         this.observers = new ArrayList<>();
     }
 
@@ -57,6 +59,7 @@ public abstract class Issue implements Parcelable, IssueObservable {
         category = in.readString();
         size = in.readString();
         context = in.readString();
+        picture = in.readString();
         this.observers = new ArrayList<>();
     }
 
@@ -99,6 +102,14 @@ public abstract class Issue implements Parcelable, IssueObservable {
         }
     }
 
+    protected void notifyPictureChanged() {
+        if (observers != null) {
+            for (IssueObserver observer : observers) {
+                observer.onPictureChanged(this);
+            }
+        }
+    }
+
     public String getTitle() { return title; }
     public String getDescription() { return description; }
     public String getLocation() { return location; }
@@ -112,6 +123,12 @@ public abstract class Issue implements Parcelable, IssueObservable {
     public String getContext() { return context; }
     public Status getStatus() { return status; }
     public Priority getPriority() { return priority; }
+    public String getPicture() { return picture; }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+        notifyPictureChanged();
+    }
 
     public float getPriorityRating() {
         return priorityRating;
@@ -130,12 +147,23 @@ public abstract class Issue implements Parcelable, IssueObservable {
         }
     }
 
+    public float ratingFromPriority(Priority priority) {
+        if (priority == null) return 1.5f;
+        switch (priority) {
+            case LOW: return 1.5f;
+            case MEDIUM: return 3.0f;
+            case HIGH: return 4.0f;
+            case CRITICAL: return 5.0f;
+            default: return 1.5f;
+        }
+    }
+
     private Priority priorityFromRating(float rating) {
         if (rating <= 2.0f) {
             return Priority.LOW;
-        } else if (rating <= 3.0f) {
+        } else if (rating <= 3.5f) {
             return Priority.MEDIUM;
-        } else if (rating <= 4.0f) {
+        } else if (rating <= 4.5f) {
             return Priority.HIGH;
         } else {
             return Priority.CRITICAL;
@@ -179,14 +207,13 @@ public abstract class Issue implements Parcelable, IssueObservable {
     }
 
     public String getFrenchStatus() {
-        if (status == null) return "Signalé";
+        if (status == null) return "Enregistré";
         switch (status) {
-            case REPORTED: return "Signalé";
-            case CONFIRMED: return "Confirmé";
-            case ON_SITE: return "Pris en charge";
-            case CLEARING: return "En cours";
+            case REGISTERED: return "Enregistré";
+            case TAKEN_IN_CHARGE: return "Pris en charge";
+            case IN_PROGRESS: return "En cours";
             case RESOLVED: return "Traité";
-            default: return "Signalé";
+            default: return "Enregistré";
         }
     }
 
@@ -216,6 +243,8 @@ public abstract class Issue implements Parcelable, IssueObservable {
     public void setPriority(Priority priority) {
         if (this.priority != priority) {
             this.priority = priority;
+            this.priorityRating = ratingFromPriority(priority);
+            updatePriorityImage();
             notifyPriorityChanged();
         }
     }
@@ -235,11 +264,12 @@ public abstract class Issue implements Parcelable, IssueObservable {
         dest.writeString(date);
         dest.writeString(hour);
         dest.writeInt(priorityImageResId);
-        dest.writeString(status != null ? status.name() : Status.REPORTED.name());
+        dest.writeString(status != null ? status.name() : Status.REGISTERED.name());
         dest.writeString(priority != null ? priority.name() : Priority.LOW.name());
         dest.writeFloat(priorityRating);
         dest.writeString(category);
         dest.writeString(size);
         dest.writeString(context);
+        dest.writeString(picture);
     }
 }

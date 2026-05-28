@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "79071613561",
+    "project_id": "obstrack-notifications",
+    "storage_bucket": "obstrack-notifications.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:79071613561:android:1eb841c988eb426c213aa8",
+        "android_client_info": {
+          "package_name": "edu.polytech.filrouge_teamM"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVQuuBDUePGzUyWvbnJGgG-9K3UDCifOc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

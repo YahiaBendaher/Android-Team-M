@@ -1,9 +1,8 @@
 package edu.polytech.filrouge_teamM;
 
 public enum Status {
-    REPORTED,
-    CONFIRMED,
-    ON_SITE,
-    CLEARING,
+    REGISTERED,
+    TAKEN_IN_CHARGE,
+    IN_PROGRESS,
     RESOLVED
 }

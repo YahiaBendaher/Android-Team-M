@@ -33,18 +33,25 @@ public class EmergencyService implements IssueObserver {
         Log.d("EmergencyService", alert);
     }
 
+    @Override
+    public void onPictureChanged(Issue issue) {
+        String alert = "Incident '" + issue.getTitle() + "' : Photo mise à jour";
+        Log.d("EmergencyService", alert);
+    }
+
     private String getFrenchStatus(Status status) {
+        if (status == null) return "Enregistré";
         switch (status) {
-            case REPORTED: return "Signalé";
-            case CONFIRMED: return "Confirmé";
-            case ON_SITE: return "Pris en charge";
-            case CLEARING: return "En cours";
+            case REGISTERED: return "Enregistré";
+            case TAKEN_IN_CHARGE: return "Pris en charge";
+            case IN_PROGRESS: return "En cours";
             case RESOLVED: return "Traité";
             default: return status.name();
         }
     }
 
     private String getFrenchPriority(Priority priority) {
+        if (priority == null) return "Faible";
         switch (priority) {
             case LOW: return "Faible";
             case MEDIUM: return "Modéré";

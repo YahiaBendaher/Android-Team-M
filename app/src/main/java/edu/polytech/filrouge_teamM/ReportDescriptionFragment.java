@@ -17,6 +17,8 @@ import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
+import com.squareup.picasso.Picasso;
+import java.io.File;
 import java.util.ArrayList;
 
 public class ReportDescriptionFragment extends Fragment {
@@ -25,10 +27,12 @@ public class ReportDescriptionFragment extends Fragment {
     private static final String ARG_ADDRESS = "address";
     private static final String ARG_LAT = "lat";
     private static final String ARG_LNG = "lng";
+    private static final String ARG_PICTURE = "picturePath";
     private Notifiable notifiable;
     private String address;
     private double latitude;
     private double longitude;
+    private String picturePath;
 
     private String selectedCategory = "Obstacle";
     private String selectedContext = "Urbain";
@@ -51,12 +55,13 @@ public class ReportDescriptionFragment extends Fragment {
             }
     );
 
-    public static ReportDescriptionFragment newInstance(String address, double lat, double lng) {
+    public static ReportDescriptionFragment newInstance(String address, double lat, double lng, String picturePath) {
         ReportDescriptionFragment fragment = new ReportDescriptionFragment();
         Bundle args = new Bundle();
         args.putString(ARG_ADDRESS, address);
         args.putDouble(ARG_LAT, lat);
         args.putDouble(ARG_LNG, lng);
+        args.putString(ARG_PICTURE, picturePath);
         fragment.setArguments(args);
         return fragment;
     }
@@ -71,6 +76,7 @@ public class ReportDescriptionFragment extends Fragment {
             address = getArguments().getString(ARG_ADDRESS);
             latitude = getArguments().getDouble(ARG_LAT);
             longitude = getArguments().getDouble(ARG_LNG);
+            picturePath = getArguments().getString(ARG_PICTURE);
         }
     }
 
@@ -94,15 +100,23 @@ public class ReportDescriptionFragment extends Fragment {
 
         issueTypeEditText = view.findViewById(R.id.issueTypeEditText);
         issueCommentEditText = view.findViewById(R.id.issueCommentEditText);
-        TextView textAddress = view.findViewById(R.id.text_address_summary);
         Button btnValidate = view.findViewById(R.id.btn_validate);
         Button btnCancel = view.findViewById(R.id.btn_cancel);
         View btnBack = view.findViewById(R.id.btn_back);
         ImageView micIconType = view.findViewById(R.id.mic_icon_type);
         ImageView micIconComment = view.findViewById(R.id.mic_icon_comment);
 
-        if (address != null) {
-            textAddress.setText("Localisation : " + address);
+        TextView textPhotoStatus = view.findViewById(R.id.text_photo_status);
+        ImageView imagePreview = view.findViewById(R.id.image_photo_preview);
+
+
+        if (picturePath != null && !picturePath.isEmpty()) {
+            textPhotoStatus.setText(getString(R.string.photo_added));
+            imagePreview.setVisibility(View.VISIBLE);
+            Picasso.get().load(new File(picturePath)).into(imagePreview);
+        } else {
+            textPhotoStatus.setText(getString(R.string.no_photo));
+            imagePreview.setVisibility(View.GONE);
         }
 
         setupCategoryButtons(view);
@@ -126,17 +140,20 @@ public class ReportDescriptionFragment extends Fragment {
                 description = "Aucun commentaire";
             }
 
-            IssueFactory factory;
-            if ("Autoroute".equalsIgnoreCase(selectedContext)) {
-                factory = new HighwayFactory();
-            } else {
-                factory = new UrbanFactory();
-            }
-
-            Issue newIssue = factory.createIssue(title, description, address, latitude, longitude, selectedCategory, selectedSize, selectedDangerLevel, selectedContext);
+            Bundle data = new Bundle();
+            data.putString("title", title);
+            data.putString("description", description);
+            data.putString("address", address);
+            data.putDouble("lat", latitude);
+            data.putDouble("lng", longitude);
+            data.putString("category", selectedCategory);
+            data.putString("size", selectedSize);
+            data.putString("danger", selectedDangerLevel);
+            data.putString("context", selectedContext);
+            data.putString("picture", picturePath);
 
             if (notifiable != null) {
-                notifiable.onDataChange(FRAGMENT_ID, newIssue, 0, newIssue.getSafetyProtocol());
+                notifiable.onDataChange(FRAGMENT_ID, data, 6, null);
             }
         });
 

@@ -3,4 +3,44 @@
     <string name="language">french</string>
     <string name="index">index</string>
     <string name="google_maps_key">AIzaSyBQYxArrkHud98Pvr8uhtUdS164AUOB_Nk</string>
+
+    <string name="camera_confirmation_title">Confirmation de la photo</string>
+    <string name="camera_success_msg">Photo capturée avec succès</string>
+    <string name="btn_use_picture">✓ Utiliser cette photo</string>
+    <string name="btn_retake">↻ Reprendre</string>
+    <string name="btn_back">Retour</string>
+    <string name="photo_added">Photo ajoutée</string>
+    <string name="no_photo">Aucune photo ajoutée</string>
+    <string name="photo_preview_label">Aperçu de la photo</string>
+    <string name="photo_miniature_label">Miniature de la photo</string>
+
+    <string name="report_description_title">Description de l\'obstacle</string>
+    <string name="label_report_type">Type de signalement *</string>
+    <string name="hint_report_type">Ex : Obstacle sur la chaussée</string>
+    <string name="label_category">Catégorie d\'obstacle *</string>
+    <string name="label_context">Contexte du signalement *</string>
+    <string name="label_size">Taille estimée *</string>
+    <string name="label_danger">Niveau de danger *</string>
+    <string name="label_comment">Commentaire (optionnel)</string>
+    <string name="hint_comment">Ajoutez des détails sur l\'obstacle, sa position exacte,</string>
+    <string name="btn_validate_description">Valider la description →</string>
+
+    <string name="summary_title">Récapitulatif</string>
+    <string name="summary_verify_title">Vérifiez votre signalement</string>
+    <string name="summary_verify_desc">Assurez-vous que toutes les informations sont correctes avant de l’envoyer.</string>
+    <string name="label_photo">Photo</string>
+    <string name="label_location">Localisation</string>
+    <string name="label_details_obstacle">Détails de l’obstacle</string>
+    <string name="btn_modify">Modifier</string>
+    <string name="summary_info_text">Une fois envoyé, votre signalement sera traité dans les plus brefs délais. Vous pourrez suivre son évolution dans la section \"Suivi\".</string>
+    <string name="btn_send_report">Envoyer le signalement</string>
+    <string name="btn_cancel_report">Annuler</string>
+
+    <string name="sent_title">Signalement envoyé !</string>
+    <string name="sent_desc">Votre signalement a été enregistré avec succès.</string>
+    <string name="label_status">Statut</string>
+    <string name="status_registered">Enregistré</string>
+    <string name="sent_follow_up">Vous pouvez suivre l’évolution de votre signalement dans la section \"Suivi\" de l’application.</string>
+    <string name="btn_view_report">Voir le signalement</string>
+    <string name="btn_home">Retour à l’accueil</string>
 </resources>

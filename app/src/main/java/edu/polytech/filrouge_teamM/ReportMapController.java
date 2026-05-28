@@ -140,11 +140,12 @@ public class ReportMapController {
     }
 
     private float getMarkerColor(Status status) {
+        if (status == null) return BitmapDescriptorFactory.HUE_ORANGE;
         switch (status) {
-            case ON_SITE: return BitmapDescriptorFactory.HUE_BLUE;
-            case CLEARING: return BitmapDescriptorFactory.HUE_VIOLET;
+            case TAKEN_IN_CHARGE: return BitmapDescriptorFactory.HUE_BLUE;
+            case IN_PROGRESS: return BitmapDescriptorFactory.HUE_VIOLET;
             case RESOLVED: return BitmapDescriptorFactory.HUE_GREEN;
-            case REPORTED:
+            case REGISTERED:
             default: return BitmapDescriptorFactory.HUE_ORANGE;
         }
     }

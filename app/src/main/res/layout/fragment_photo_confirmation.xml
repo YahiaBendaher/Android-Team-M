@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:text="@string/photo_preview_label"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="20dp">
+
+        <ImageView
+            android:id="@+id/picture_preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerInside"
+            android:padding="10dp" />
+
+
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/btn_use_picture"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#2563FF"
+        android:text="@string/btn_use_picture"
+        android:textAllCaps="false"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/btn_retake_picture"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="#1A1A1A"
+        android:text="@string/btn_retake"
+        android:textAllCaps="false"
+        android:textColor="@color/white" />
+
+</LinearLayout>

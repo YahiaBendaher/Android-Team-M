@@ -3,15 +3,16 @@ package edu.polytech.filrouge_teamM;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -30,7 +31,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private FusedLocationProviderClient fusedLocationClient;
 
     private static final LatLng POLYTECH_SOPHIA = new LatLng(43.615, 7.071);
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1001;
+
+    private final ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    enableMyLocationAndCenter();
+                } else {
+                    centerOnFallback();
+                }
+            });
 
     public MapFragment() {
     }
@@ -38,7 +47,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onStart() {
         super.onStart();
-        notifiable.onFragmentDisplayed(FRAGMENT_ID);
+        if (notifiable != null) {
+            notifiable.onFragmentDisplayed(FRAGMENT_ID);
+        }
     }
 
     @Override
@@ -77,14 +88,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         controller = new ReportMapController(requireContext(), ReportMapModel.getInstance());
         controller.initMap(mMap);
 
-        checkLocationPermissionAndCenter();
+        checkLocationPermission();
     }
 
-    private void checkLocationPermissionAndCenter() {
-        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
-            centerOnFallback();
+    private void checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            enableMyLocationAndCenter();
         } else {
+            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+    }
+
+    private void enableMyLocationAndCenter() {
+        if (mMap == null) return;
+        
+        try {
             mMap.setMyLocationEnabled(true);
             fusedLocationClient.getCurrentLocation(com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY, null)
                     .addOnSuccessListener(location -> {
@@ -101,6 +119,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         Log.e("MapFragment", "Error getting location", e);
                         centerOnFallback();
                     });
+        } catch (SecurityException e) {
+            Log.e("MapFragment", "Security exception while enabling location", e);
+            centerOnFallback();
         }
     }
 
@@ -112,15 +133,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void centerOnFallback() {
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(POLYTECH_SOPHIA, 15f));
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                checkLocationPermissionAndCenter();
-            }
+        if (mMap != null) {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(POLYTECH_SOPHIA, 15f));
         }
     }
 }

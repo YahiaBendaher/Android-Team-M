@@ -71,8 +71,8 @@ public class ReportListFragment extends Fragment implements ClickableIssue<Issue
         if (anchorView == null) anchorView = listView;
 
         PopupMenu popupMenu = new PopupMenu(requireContext(), anchorView);
-        final String[] statusLabels = {"Signalé", "Confirmé", "Pris en charge", "En cours", "Traité"};
-        final Status[] statusValues = {Status.REPORTED, Status.CONFIRMED, Status.ON_SITE, Status.CLEARING, Status.RESOLVED};
+        final String[] statusLabels = {"Enregistré", "Pris en charge", "En cours", "Traité"};
+        final Status[] statusValues = {Status.REGISTERED, Status.TAKEN_IN_CHARGE, Status.IN_PROGRESS, Status.RESOLVED};
 
         for (int i = 0; i < statusLabels.length; i++) {
             popupMenu.getMenu().add(0, i, i, statusLabels[i]);
