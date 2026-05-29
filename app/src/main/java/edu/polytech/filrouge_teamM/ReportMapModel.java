@@ -6,9 +6,11 @@ import java.util.List;
 public class ReportMapModel {
     private static ReportMapModel instance;
     private final List<Issue> issues;
+    private final List<Issue> myIssues;
 
     private ReportMapModel() {
         issues = new ArrayList<>();
+        myIssues = new ArrayList<>();
         initializeMocks();
     }
 
@@ -18,6 +20,7 @@ public class ReportMapModel {
         }
         return instance;
     }
+
 
     private void initializeMocks() {
         // LOW -> 1.5f, MEDIUM -> 3.0f, HIGH -> 4.0f, CRITICAL -> 5.0f
@@ -51,8 +54,13 @@ public class ReportMapModel {
         return issues;
     }
 
+    public List<Issue> getMyIssues() {
+        return myIssues;
+    }
+
     public void addIssue(Issue issue) {
         issues.add(issue);
+        myIssues.add(issue);
     }
 
     public void updateReportLocation(Issue issue, double latitude, double longitude) {

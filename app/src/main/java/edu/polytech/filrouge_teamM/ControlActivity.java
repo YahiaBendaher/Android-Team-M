@@ -28,14 +28,13 @@ public class ControlActivity extends AppCompatActivity implements Menuable, Noti
     public static final int TAB_LIST = 3;
     public static final int TAB_TRACKING = 4;
 
-    private static final String DATA_IS_STARTING = "sauvegarde";
     private static final String DATA_MENU_NUMBER = "num";
     private static final String DATA_PENDING_PICTURE = "pending_picture";
     private static final String DATA_PENDING_CAMERA_PHOTO = "pending_camera_photo";
     private final String TAG = "teamM " + getClass().getSimpleName();
     private Fragment mainFragment;
     private MenuFragment menu;
-    private boolean isStarting = true;
+
     private String pendingPicturePath;
     private String pendingCameraPhotoPath;
 
@@ -273,6 +272,16 @@ public class ControlActivity extends AppCompatActivity implements Menuable, Noti
             transaction.replace(R.id.fragment_main, mainFragment);
             transaction.addToBackStack(null);
             transaction.commit();
+
+            for (Fragment f : getSupportFragmentManager().getFragments()) {
+                if (f instanceof HomeFragment) {
+                    ((HomeFragment) f).rafraichir(f.requireView());
+                } else if (f instanceof ReportListFragment) {
+                    ((ReportListFragment) f).rafraichir();
+                } else if (f instanceof TrackingFragment) {
+                    ((TrackingFragment) f).rafraichir();
+                }
+            }
         } else if (actionCode == 8) {
             Issue issue = (Issue) object;
             mainFragment = ReportDetailFragment.newInstance(issue);
@@ -285,7 +294,6 @@ public class ControlActivity extends AppCompatActivity implements Menuable, Noti
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean(DATA_IS_STARTING, isStarting);
         outState.putInt(DATA_MENU_NUMBER, menuNumber);
         outState.putString(DATA_PENDING_PICTURE, pendingPicturePath);
         outState.putString(DATA_PENDING_CAMERA_PHOTO, pendingCameraPhotoPath);

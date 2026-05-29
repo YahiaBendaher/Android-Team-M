@@ -49,13 +49,13 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.goDefault).setOnClickListener(clic -> {
             Intent intent = new Intent(getApplicationContext(), ControlActivity.class);
-            intent.putExtra(getString(R.string.index), ControlActivity.TAB_HOME);
+            intent.putExtra(getString(R.string.index), ControlActivity.TAB_LIST);
             startActivity(intent);
         });
 
         findViewById(R.id.option).setOnClickListener(clic -> {
             Intent intent = new Intent(getApplicationContext(), ControlActivity.class);
-            intent.putExtra(getString(R.string.index), ControlActivity.TAB_MAP);
+            intent.putExtra(getString(R.string.index), ControlActivity.TAB_REPORT);
             startActivity(intent);
         });
     }

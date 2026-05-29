@@ -38,42 +38,77 @@ public class ReportDetailFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_report_detail, container, false);
 
+        view.findViewById(R.id.btnRetour).setOnClickListener(v ->
+                requireActivity().getSupportFragmentManager().popBackStack());
+
+        if (getArguments() == null) return view;
+        Issue issue = getArguments().getParcelable(ARG_ISSUE);
+        if (issue == null) return view;
+
         ImageView detailImage = view.findViewById(R.id.logo_detail);
-        TextView topicView = view.findViewById(R.id.topic);
-        TextView protocolView = view.findViewById(R.id.detail_protocol);
+        ImageView iconeNoPhoto = view.findViewById(R.id.iconeNoPhoto);
 
-        if (getArguments() != null && getArguments().containsKey(ARG_ISSUE)) {
-            Issue issue = getArguments().getParcelable(ARG_ISSUE);
-            if (issue != null) {
-                if (issue.getPicture() != null && !issue.getPicture().isEmpty()) {
-                    File file = new File(issue.getPicture());
-                    if (file.exists()) {
-                        Picasso.get().load(file).into(detailImage);
-                    } else if (issue.getPriorityImageResId() != 0) {
-                        detailImage.setImageResource(issue.getPriorityImageResId());
-                    }
-                } else if (issue.getPriorityImageResId() != 0) {
-                    detailImage.setImageResource(issue.getPriorityImageResId());
-                }
-
-                String details = "Type : " + issue.getTitle() + "\n" +
-                        "Description : " + issue.getDescription() + "\n" +
-                        "Localisation : " + issue.getLocation() + "\n" +
-                        "Catégorie : " + issue.getCategory() + "\n" +
-                        "Contexte : " + issue.getContext() + "\n" +
-                        "Taille : " + issue.getSize() + "\n" +
-                        "Priorité : " + issue.getDangerLevel() + "\n" +
-                        "Statut : " + issue.getFrenchStatus() + "\n" +
-                        "Date : " + issue.getDate() + " à " + issue.getHour();
-                
-                topicView.setText(details);
-                
-                if (protocolView != null) {
-                    protocolView.setText(issue.getSafetyProtocol());
-                }
+        if (issue.getPicture() != null && !issue.getPicture().isEmpty()) {
+            File file = new File(issue.getPicture());
+            if (file.exists()) {
+                iconeNoPhoto.setVisibility(View.GONE);
+                Picasso.get().load(file).into(detailImage);
+            } else {
+                detailImage.setVisibility(View.GONE);
             }
+        } else {
+            detailImage.setVisibility(View.GONE);
         }
 
+        TextView txtStatut = view.findViewById(R.id.txtStatutBadge);
+        txtStatut.setText(issue.getFrenchStatus());
+        txtStatut.setTextColor(couleurTextStatut(issue.getStatus()));
+        txtStatut.setBackgroundColor(couleurBgStatut(issue.getStatus()));
+
+        ((TextView) view.findViewById(R.id.txtCategorie)).setText(issue.getCategory());
+        ((TextView) view.findViewById(R.id.txtTaille)).setText(issue.getSize());
+
+        TextView txtDanger = view.findViewById(R.id.txtDanger);
+        txtDanger.setText(issue.getDangerLevel());
+        txtDanger.setTextColor(couleurDanger(issue.getPriority()));
+
+        ((TextView) view.findViewById(R.id.txtDescription)).setText(issue.getDescription());
+        ((TextView) view.findViewById(R.id.txtLocalisation)).setText(issue.getLocation());
+        ((TextView) view.findViewById(R.id.txtDate)).setText(issue.getDate() + " à " + issue.getHour());
+
         return view;
+    }
+
+    private int couleurTextStatut(Status status) {
+        if (status == null) return 0xFF64748B;
+        switch (status) {
+            case REGISTERED: return 0xFFB45309;
+            case TAKEN_IN_CHARGE: return 0xFF1D4ED8;
+            case IN_PROGRESS: return 0xFF6D28D9;
+            case RESOLVED: return 0xFF065F46;
+            default: return 0xFF64748B;
+        }
+    }
+
+    private int couleurBgStatut(Status status) {
+        if (status == null) return 0xFFE2E8F0;
+        switch (status) {
+            case REGISTERED: return 0xFFFEF3C7;
+            case TAKEN_IN_CHARGE: return 0xFFDBEAFE;
+            case IN_PROGRESS: return 0xFFEDE9FE;
+            case RESOLVED: return 0xFFD1FAE5;
+            default: return 0xFFE2E8F0;
+        }
+    }
+
+    private int couleurDanger(Priority priority) {
+        if (priority == null) return 0xFF64748B;
+        switch (priority) {
+            case LOW: return 0xFF16A34A;
+            case MEDIUM: return 0xFFD97706;
+            case HIGH:
+            case CRITICAL: return 0xFFDC2626;
+            default: return 0xFF64748B;
+        }
     }
 }

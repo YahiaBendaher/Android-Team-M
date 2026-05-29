@@ -35,12 +35,26 @@ public class ReportListFragment extends Fragment implements ClickableIssue<Issue
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_report_list, container, false);
         ListView listView = view.findViewById(R.id.listViewSignalements);
-
-        issues = ReportMapModel.getInstance().getIssues();
-
+        issues = new java.util.ArrayList<>(ReportMapModel.getInstance().getIssues());
+        java.util.Collections.reverse(issues);
         adapter = new IssueAdapter(this, issues);
         listView.setAdapter(adapter);
         return view;
+    }
+
+    public void rafraichir() {
+        issues.clear();
+        issues.addAll(ReportMapModel.getInstance().getIssues());
+        java.util.Collections.reverse(issues);
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        rafraichir();
     }
 
     @Override
