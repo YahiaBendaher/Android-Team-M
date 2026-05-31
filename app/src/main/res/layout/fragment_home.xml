@@ -8,7 +8,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="60dp"
         android:background="#1E2B3C">
 
         <TextView
@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:text="Accueil"
             android:textColor="#FFFFFF"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -27,36 +27,88 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="20dp">
 
-            <Button
-                android:id="@+id/btnNouveauSignalement"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:backgroundTint="#2563EB"
-                android:text="+ Nouveau signalement"
-                android:textColor="#FFFFFF"
-                android:textSize="16sp"
-                android:layout_marginBottom="16dp" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bienvenue sur Obstrack"
+                    android:textColor="#1E2B3C"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Suivez les obstacles signalés autour de vous et créez un nouveau signalement rapidement."
+                    android:textColor="#64748B"
+                    android:textSize="14sp"
+                    android:layout_marginTop="4dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:layout_marginBottom="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Une anomalie sur la route ?"
+                    android:textColor="#1E2B3C"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="12dp" />
+
+                <Button
+                    android:id="@+id/btnNouveauSignalement"
+                    android:layout_width="match_parent"
+                    android:layout_height="54dp"
+                    android:backgroundTint="#2563EB"
+                    android:text="+ Nouveau signalement"
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Aperçu global"
+                android:textColor="#1E2B3C"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="12dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="28dp">
 
                 <LinearLayout
                     android:id="@+id/btnTotal"
                     android:layout_width="0dp"
-                    android:layout_height="72dp"
+                    android:layout_height="80dp"
                     android:layout_weight="1"
-                    android:layout_marginEnd="4dp"
+                    android:layout_marginEnd="6dp"
                     android:background="#FFFFFF"
                     android:orientation="vertical"
                     android:gravity="center">
@@ -67,24 +119,24 @@
                         android:layout_height="wrap_content"
                         android:text="0"
                         android:textColor="#1E2B3C"
-                        android:textSize="18sp"
+                        android:textSize="22sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Total"
-                        android:textColor="#1E2B3C"
-                        android:textSize="11sp" />
+                        android:textColor="#64748B"
+                        android:textSize="12sp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/btnEnCours"
                     android:layout_width="0dp"
-                    android:layout_height="72dp"
+                    android:layout_height="80dp"
                     android:layout_weight="1"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginEnd="4dp"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginEnd="6dp"
                     android:background="#FFFFFF"
                     android:orientation="vertical"
                     android:gravity="center">
@@ -94,24 +146,24 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0"
-                        android:textColor="#8B5CF6"
-                        android:textSize="18sp"
+                        android:textColor="#2563EB"
+                        android:textSize="22sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="En cours"
-                        android:textColor="#8B5CF6"
-                        android:textSize="11sp" />
+                        android:textColor="#2563EB"
+                        android:textSize="12sp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/btnTraites"
                     android:layout_width="0dp"
-                    android:layout_height="72dp"
+                    android:layout_height="80dp"
                     android:layout_weight="1"
-                    android:layout_marginStart="4dp"
+                    android:layout_marginStart="6dp"
                     android:background="#FFFFFF"
                     android:orientation="vertical"
                     android:gravity="center">
@@ -122,7 +174,7 @@
                         android:layout_height="wrap_content"
                         android:text="0"
                         android:textColor="#10B981"
-                        android:textSize="18sp"
+                        android:textSize="22sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -130,7 +182,7 @@
                         android:layout_height="wrap_content"
                         android:text="Traités"
                         android:textColor="#10B981"
-                        android:textSize="11sp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -139,15 +191,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="8dp">
+                android:gravity="center_vertical"
+                android:layout_marginBottom="12dp">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Mes prises en charge"
+                    android:text="Mes signalements"
                     android:textColor="#1E2B3C"
-                    android:textSize="15sp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -155,22 +208,39 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Voir tout"
+                    android:padding="8dp"
                     android:textColor="#2563EB"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/containerMesPrises"
+                android:id="@+id/home_my_reports_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/home_empty_my_reports_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:text="Vous n'avez pas encore créé de signalement."
+                android:textColor="#64748B"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:padding="32dp"
+                android:visibility="gone"
+                android:layout_marginBottom="24dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="8dp">
+                android:gravity="center_vertical"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp">
 
                 <TextView
                     android:layout_width="0dp"
@@ -178,7 +248,7 @@
                     android:layout_weight="1"
                     android:text="Signalements récents"
                     android:textColor="#1E2B3C"
-                    android:textSize="15sp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -186,15 +256,29 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Voir tout"
+                    android:padding="8dp"
                     android:textColor="#2563EB"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/containerRecents"
+                android:id="@+id/home_recent_reports_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />
+
+            <TextView
+                android:id="@+id/home_empty_recent_reports_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:text="Aucun signalement récent dans votre zone."
+                android:textColor="#64748B"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:padding="32dp"
+                android:visibility="gone" />
 
         </LinearLayout>
     </ScrollView>

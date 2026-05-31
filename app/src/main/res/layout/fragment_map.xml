@@ -5,88 +5,119 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E8EDF2"
-    tools:context=".MapFragment">
+    android:background="#F0F2F5"
+    tools:context=".map.MapFragment">
 
-    <View
-        android:id="@+id/headerBackground"
+    <LinearLayout
+        android:id="@+id/headerLayout"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="#232F3E"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/titleMap"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Carte des signalements"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/headerBackground"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/headerBackground" />
+        android:background="#232F3E"
+        android:orientation="vertical"
+        android:padding="12dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/titleMap"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Carte des signalements"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/helpText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Touchez un marqueur pour consulter les informations"
+            android:textColor="#B0BEC5"
+            android:textSize="11sp"
+            android:layout_marginTop="2dp" />
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/map_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/headerBackground"
-        app:layout_constraintBottom_toTopOf="@id/legendCard"
+        app:layout_constraintTop_toBottomOf="@id/headerLayout"
+        app:layout_constraintBottom_toTopOf="@id/legendContainer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/legendCard"
+    <LinearLayout
+        android:id="@+id/legendContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="4dp"
+        android:background="#F6F8FB"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="10dp"
         app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Légende"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:textColor="#546E7A"
+            android:layout_marginBottom="8dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="12dp">
+            android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Légende"
-                android:textSize="12sp"
-                android:textColor="#707070"
-                android:layout_marginBottom="8dp"/>
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <View android:layout_width="10dp" android:layout_height="10dp" android:background="#EA580C" android:layout_marginEnd="8dp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Enregistré" android:textSize="11sp" android:textColor="#263238"/>
+            </LinearLayout>
 
-            <GridLayout
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:columnCount="2">
-
-                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:gravity="center_vertical" android:layout_marginBottom="4dp">
-                    <View android:layout_width="12dp" android:layout_height="12dp" android:background="@color/orange" android:layout_marginEnd="8dp"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Enregistré" android:textSize="12sp"/>
-                </LinearLayout>
-
-                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:gravity="center_vertical">
-                    <View android:layout_width="12dp" android:layout_height="12dp" android:background="@color/blue" android:layout_marginEnd="8dp"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Pris en charge" android:textSize="12sp"/>
-                </LinearLayout>
-
-                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:gravity="center_vertical">
-                    <View android:layout_width="12dp" android:layout_height="12dp" android:background="@color/purple" android:layout_marginEnd="8dp"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="En cours" android:textSize="12sp"/>
-                </LinearLayout>
-
-                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:gravity="center_vertical">
-                    <View android:layout_width="12dp" android:layout_height="12dp" android:background="@color/green" android:layout_marginEnd="8dp"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Traité" android:textSize="12sp"/>
-                </LinearLayout>
-
-            </GridLayout>
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <View android:layout_width="10dp" android:layout_height="10dp" android:background="#2563EB" android:layout_marginEnd="8dp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Pris en charge" android:textSize="11sp" android:textColor="#263238"/>
+            </LinearLayout>
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="6dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <View android:layout_width="10dp" android:layout_height="10dp" android:background="#8B5CF6" android:layout_marginEnd="8dp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="En cours" android:textSize="11sp" android:textColor="#263238"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <View android:layout_width="10dp" android:layout_height="10dp" android:background="#10B981" android:layout_marginEnd="8dp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Traité" android:textSize="11sp" android:textColor="#263238"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

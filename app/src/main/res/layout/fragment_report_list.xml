@@ -5,34 +5,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F5F7FA"
-    tools:context=".ReportListFragment">
+    android:background="#F0F2F5"
+    tools:context=".report.list.ReportListFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
+        android:id="@+id/headerLayout"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="#1E2A3A"
-        android:paddingHorizontal="16dp">
+        android:layout_height="wrap_content"
+        android:background="#232F3E"
+        android:orientation="vertical"
+        android:padding="12dp">
 
         <TextView
             android:id="@+id/titleList"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="Liste des signalements"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:textStyle="bold" />
+    </LinearLayout>
 
     <ListView
         android:id="@+id/listViewSignalements"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="#e0ede9"
-        android:dividerHeight="1dp" />
+        android:clipToPadding="false"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:paddingBottom="16dp" />
 
 </LinearLayout>
