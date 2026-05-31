@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".app.MainActivity">
 
-    <!-- Fond avec alpha -->
     <ImageView
         android:id="@+id/backgroundImage"
         android:layout_width="match_parent"
@@ -90,7 +89,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
         android:layout_marginBottom="12dp"
-        android:background="#FFFFFF"
+        android:background="@drawable/card_border"
         android:clickable="true"
         android:focusable="true"
         android:gravity="center_vertical"
@@ -134,7 +133,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
         android:layout_marginBottom="40dp"
-        android:background="#FFFFFF"
+        android:background="@drawable/card_border"
         android:clickable="true"
         android:focusable="true"
         android:gravity="center_vertical"
